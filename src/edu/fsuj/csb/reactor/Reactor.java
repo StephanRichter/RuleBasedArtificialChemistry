@@ -18,7 +18,7 @@ public class Reactor extends Thread{
 	MoleculeSet molecules=new MoleculeSet();
 	Vector<Integer> reactantCounts=new Vector<Integer>();
 	static Random generator=new Random(1);
-	
+
 	@Override
 	public void run() {
 	  super.run();
@@ -36,13 +36,11 @@ public class Reactor extends Thread{
       } catch (OutOfMoleculesException e) {
       	e.printStackTrace();
       	break;
-      } catch (InterruptedException e) {
-	      e.printStackTrace();
       }
 	  }
 	}	
 
-	private void apply(Reaction reaction, MoleculeSet substrates) throws OutOfMoleculesException, InterruptedException {
+	private void apply(Reaction reaction, MoleculeSet substrates) throws OutOfMoleculesException {
 	  //System.out.println("Trying to apply "+reaction.getClass().getSimpleName()+" on "+substrates);		
 	  molecules.modify(reaction.balance(substrates));
 		//System.out.println("Molecule set: "+molecules);
@@ -77,7 +75,7 @@ public class Reactor extends Thread{
 		
 		while (true){
 			evaluate(reactor);
-			Thread.sleep(200);
+			Thread.sleep(1000);
 		}
 	}
 

@@ -122,8 +122,10 @@ public class MoleculeSet {
 		for (Entry<Molecule, Integer> entry:molecules.entrySet()){
 			int dummy=entry.getValue();			
 			if (dummy>max) max=dummy;
-			dummy=entry.getKey().formula().length();
-			if (dummy>length)length=dummy;
+			if (dummy>0){
+				dummy=entry.getKey().formula().length();
+				if (dummy>length) length=dummy;
+			}
 		}
 		if (length>width) length=width;
 		char[][] display=new char[height][length];
@@ -133,11 +135,11 @@ public class MoleculeSet {
 			}
 		}
 		for (Entry<Molecule, Integer> entry:molecules.entrySet()){
-			int x=entry.getKey().formula().length()-1;
+			int x=entry.getKey().formula().length();
 			if (x>=length) continue;
-			int h=entry.getValue()*height/max;
+			int h=(entry.getValue()*height)/max;
 			for (int y=0; y<height; y++){
-				if (y<h) display[y][x]='❚';
+				if (y<h) display[y][x-1]='❚';
 			}
 		}
 		StringBuffer sb=new StringBuffer();
