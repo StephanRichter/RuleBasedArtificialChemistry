@@ -11,39 +11,35 @@ public class Reactor extends Thread{
 	
 	Vector<Reaction> registeredReactions=new Vector<Reaction>();
 	TreeMap<Molecule,Integer> molecules=new TreeMap<Molecule, Integer>(ObjectComparator.get());
+	Vector<Integer> reactantCounts=new Vector<Integer>();
 	Random generator=new Random(1);
 	
 	@Override
 	public void run() {
 	  super.run();
-	  
-	  int maxReactants = getMaximumNumberOfReactants(registeredReactions);
-	  
+
+	  System.out.println("Possible reactant counts: "+reactantCounts);
 	  while (true){
-	  	int numberOfReactants = generator.nextInt(maxReactants+1);
-	  	TreeMap<Molecule, Integer> subset = diceMolecules(numberOfReactants);
-	  	Vector<Reaction> suitableReactions=findSuitableReactions(subset);	  
+	  	int numberOfReactants = reactantCounts.get(generator.nextInt(reactantCounts.size()));
+	  	System.out.println("reactants: "+numberOfReactants);
+	  	TreeMap<Molecule, Integer> substrates = diceMolecules(numberOfReactants);
+	  	System.out.println("substrates: "+substrates);
+	  	Vector<Reaction> suitableReactions=findSuitableReactions(substrates);	  
 	  	Reaction reaction=diceReaction(suitableReactions);
 	  	try {
-	      apply(reaction,subset);
+	      apply(reaction,substrates);
       } catch (OutOfMoleculesException e) {
       	e.printStackTrace();
       	break;
+      } catch (InterruptedException e) {
+	      e.printStackTrace();
       }
 	  }
 	}	
 	
-	private int getMaximumNumberOfReactants(Vector<Reaction> registeredReactions2) {
-		int max=0;
-		for (Reaction r:registeredReactions){
-			int s=r.numberOfConsumedMolecules();
-			if (s<max) max=s;
-		}
-	  return max;
-  }
-
 	private TreeMap<Molecule, Integer> diceMolecules(int numberOfReactants) {		
 	  TreeMap<Molecule, Integer> subset=new TreeMap<Molecule, Integer>(ObjectComparator.get());
+	  if (molecules.size()==0) return subset;
 	  for (int i=0; i<numberOfReactants; i++){
 	  	int type=generator.nextInt(molecules.size());
 	  	Molecule m=null;
@@ -58,15 +54,18 @@ public class Reactor extends Thread{
 	  	Integer consumed = subset.get(m);
 	  	if (consumed==null) consumed=0;
 	  	if (consumed<available){
-	  		subset.put(m,consumed);
+	  		subset.put(m,consumed+1);
 	  	}	  	
 	  }
 		return subset;
   }
 
-	private void apply(Reaction reaction, TreeMap<Molecule, Integer> substrates) throws OutOfMoleculesException {
-	  remove(substrates);
+	private void apply(Reaction reaction, TreeMap<Molecule, Integer> substrates) throws OutOfMoleculesException, InterruptedException {
+	  System.out.println("Trying to apply "+reaction.getClass().getSimpleName()+" on "+substrates);
+		remove(substrates);
 	  add(reaction.producedMolecules(substrates));
+	  Thread.sleep(1000);
+		System.out.println("Molecule set: "+molecules);
   }
 
 	private void add(TreeMap<Molecule, Integer> producedMolecules) {
@@ -119,11 +118,13 @@ public class Reactor extends Thread{
 	}
 
 	private void register(Reaction type) {
-		registeredReactions.add(type);	  
+		registeredReactions.add(type);
+		int count = type.numberOfConsumedMolecules();
+		if (!reactantCounts.contains(count)) reactantCounts.add(count);
   }
 
 	private static void evaluate(Reactor reactor) {
-		System.out.println(reactor.molecules);
+		//System.out.println(reactor.molecules);
 	  
   }
 }

@@ -4,24 +4,28 @@ import java.util.TreeMap;
 
 import de.srsoftware.tools.ObjectComparator;
 
-public class InflowReaction extends Reaction {	
+public class InflowReaction extends Reaction {
 	
-	private TreeMap<Molecule, Integer> consumedMolecules,producedMolecules;
+	
+	TreeMap<Molecule, Integer> production;
 
-	public InflowReaction(Molecule molecule) {
-		consumedMolecules=new TreeMap<Molecule, Integer>(ObjectComparator.get());
-		producedMolecules=new TreeMap<Molecule, Integer>(ObjectComparator.get());
-		producedMolecules.put(molecule, 1);
+	public InflowReaction(Molecule type) {
+		production=new TreeMap<Molecule, Integer>(ObjectComparator.get());
+		production.put(type, 1);
   }
 
 	@Override
-	public TreeMap<Molecule, Integer> consumedMolecules() {
-		return consumedMolecules;
-	}
+  public boolean isSuitable(TreeMap<Molecule, Integer> substrates) {
+	  return true;
+  }
 
 	@Override
-	public TreeMap<Molecule, Integer> producedMolecules() {
-		return producedMolecules;
-	}
+  public TreeMap<Molecule, Integer> producedMolecules(TreeMap<Molecule, Integer> substrates) {
+	  return production;
+  }
 
+	@Override
+  public int numberOfConsumedMolecules() {
+	  return 0;
+  }	
 }
