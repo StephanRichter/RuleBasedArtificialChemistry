@@ -1,6 +1,9 @@
-package edu.fsuj.csb.reactor;
+package edu.fsuj.csb.reactor.reactions;
 
 import java.util.Random;
+
+import edu.fsuj.csb.reactor.MoleculeSet;
+import edu.fsuj.reactor.molecules.Polymer;
 
 public class PolymerBreakdown extends Reaction {
 

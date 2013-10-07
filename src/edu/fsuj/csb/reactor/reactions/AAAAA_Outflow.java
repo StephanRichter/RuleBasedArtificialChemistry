@@ -1,8 +1,10 @@
-package edu.fsuj.csb.reactor;
+package edu.fsuj.csb.reactor.reactions;
+
+import edu.fsuj.csb.reactor.MoleculeSet;
 
 public class AAAAA_Outflow extends Reaction {
 
-	static int counter=0;
+	public static int counter=0;
 	
 	public boolean isSuitable(MoleculeSet substrates) {
 		if (substrates.size()!=1) return false;

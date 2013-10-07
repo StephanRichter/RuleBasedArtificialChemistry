@@ -1,4 +1,4 @@
-package edu.fsuj.csb.reactor;
+package edu.fsuj.reactor.molecules;
 
 public abstract class Molecule {
 	

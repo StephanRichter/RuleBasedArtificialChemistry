@@ -3,6 +3,14 @@ package edu.fsuj.csb.reactor;
 import java.util.Random;
 import java.util.Vector;
 
+import edu.fsuj.csb.reactor.reactions.AAAAA_Outflow;
+import edu.fsuj.csb.reactor.reactions.A_Condensation;
+import edu.fsuj.csb.reactor.reactions.InflowReaction;
+import edu.fsuj.csb.reactor.reactions.PolymerBreakdown;
+import edu.fsuj.csb.reactor.reactions.Reaction;
+import edu.fsuj.reactor.molecules.Molecule;
+import edu.fsuj.reactor.molecules.MoleculeA;
+
 public class Reactor extends Thread{
 	
 	Vector<Reaction> registeredReactions=new Vector<Reaction>();

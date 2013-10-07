@@ -1,7 +1,10 @@
-package edu.fsuj.csb.reactor;
+package edu.fsuj.csb.reactor.reactions;
 
 import java.util.Map.Entry;
 import java.util.TreeMap;
+
+import edu.fsuj.csb.reactor.MoleculeSet;
+import edu.fsuj.reactor.molecules.Molecule;
 
 public abstract class Reaction {
 

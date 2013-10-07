@@ -1,6 +1,10 @@
-package edu.fsuj.csb.reactor;
+package edu.fsuj.csb.reactor.reactions;
 
 import java.util.Map.Entry;
+
+import edu.fsuj.csb.reactor.MoleculeSet;
+import edu.fsuj.reactor.molecules.Molecule;
+import edu.fsuj.reactor.molecules.Polymer;
 
 public class A_Condensation extends Reaction {
 
