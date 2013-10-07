@@ -86,6 +86,6 @@ public class Reactor extends Thread{
 
 	private static void evaluate(Reactor reactor) {
 		System.out.print(reactor.molecules);
-		System.out.println(" exported: "+AAAAA_Outflow.counter);
+		System.out.println(" exported: "+AAAAA_Outflow.counter); //*/
   }
 }

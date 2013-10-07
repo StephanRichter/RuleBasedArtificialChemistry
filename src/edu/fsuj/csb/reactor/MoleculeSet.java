@@ -29,24 +29,41 @@ public class MoleculeSet {
   }
 	
 	MoleculeSet dice(int numberOfReactants) {
-	  MoleculeSet result=new MoleculeSet();
-	  if (molecules.size()==0) return result;
-	  for (int i=0; i<numberOfReactants; i++){
-	  	int type=generator.nextInt(molecules.size());
-	  	Molecule m=null;
-	  	Integer available=null;
-	  	
-	  	for (Entry<Molecule, Integer> entry:molecules.entrySet()){
-	  		m=entry.getKey();
-	  		available=entry.getValue();
-	  		if (--type==0) break;
-	  	}
-	  	
-	  	Integer consumed = result.get(m);
-	  	if (consumed==null) consumed=0;
-	  	if (consumed<available)	result.add(m);
-	  }
+		//System.out.println("Selecting "+numberOfReactants+" reactants out of "+this);
+		int poolSize=size();
+		MoleculeSet result = new MoleculeSet();
+		int resultSize=0;
+		while (resultSize<numberOfReactants && resultSize<poolSize){
+			int index = generator.nextInt(poolSize);
+			//System.out.println("index: "+index);
+			Molecule key=get(index);
+			//System.out.println("Molecule: "+key);
+			Integer count=result.get(key);
+			if (count==null) count=0;
+			if (count<molecules.get(key)) {
+				result.add(key);
+				resultSize=result.size();
+			}
+		}
+		/*System.out.println("Result: "+result);
+		try {
+	    Thread.sleep(1000);
+    } catch (InterruptedException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+    } //*/
 		return result;
+  }
+
+	private Molecule get(int index) {
+		int counter=0;
+		for (Entry<Molecule, Integer> entry:molecules.entrySet()){
+			counter+=entry.getValue();
+			if (counter>index){
+				return entry.getKey();
+			}
+		}
+	  return null;
   }
 
 	Integer get(Molecule m) {
