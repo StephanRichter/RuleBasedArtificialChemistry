@@ -2,12 +2,9 @@ package edu.fsuj.csb.reactor;
 
 import java.util.TreeMap;
 
-public class Reaction {
+public abstract class Reaction {
 
-	public boolean isSuitable(TreeMap<Molecule, Integer> molecules) {
-	  // TODO Auto-generated method stub
-	  return false;
-  }
-
-
+	public abstract boolean isSuitable(TreeMap<Molecule, Integer> substrates);
+	public abstract TreeMap<Molecule, Integer> producedMolecules(TreeMap<Molecule, Integer> substrates);
+	public abstract int numberOfConsumedMolecules();
 }
