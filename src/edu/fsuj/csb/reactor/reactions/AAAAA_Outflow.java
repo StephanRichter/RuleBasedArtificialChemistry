@@ -4,7 +4,7 @@ import edu.fsuj.csb.reactor.MoleculeSet;
 
 public class AAAAA_Outflow extends Reaction {
 
-	public static int counter=0;
+	private static int counter=0;
 	
 	public boolean isSuitable(MoleculeSet substrates) {
 		if (substrates.size()!=1) return false;
@@ -23,4 +23,7 @@ public class AAAAA_Outflow extends Reaction {
 		return 1;
 	}
 
+	public static int count() {
+		return counter;
+	}
 }

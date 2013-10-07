@@ -113,4 +113,8 @@ public class MoleculeSet {
 		}
 		return this;
   }
+
+	public String hist() {
+	  return null;
+  }
 }

@@ -7,6 +7,7 @@ import edu.fsuj.reactor.molecules.Polymer;
 
 public class PolymerBreakdown extends Reaction {
 
+	private static int counter=0;
 	private Random generator;
 
 	public PolymerBreakdown(Random generator) {
@@ -26,7 +27,8 @@ public class PolymerBreakdown extends Reaction {
 		int split=1+generator.nextInt(formula.length()-1);		
 		balance.invert();
 		balance.add(new Polymer(formula.substring(0, split)));
-		balance.add(new Polymer(formula.substring(split)));		
+		balance.add(new Polymer(formula.substring(split)));
+		counter++;
 		return balance;
 	}
 
@@ -35,4 +37,7 @@ public class PolymerBreakdown extends Reaction {
 		return 1;
 	}
 
+	public static int count() {
+		return counter;
+	}
 }

@@ -7,6 +7,7 @@ import edu.fsuj.reactor.molecules.Molecule;
 public class InflowReaction extends Reaction {
 	
 	
+	private static int counter=0;
 	MoleculeSet production;
 
 	public InflowReaction(Molecule type) {
@@ -21,11 +22,16 @@ public class InflowReaction extends Reaction {
 
 	@Override
   public MoleculeSet balance(MoleculeSet substrates) {
+		counter++;
 	  return production;
   }
 
 	@Override
   public int numberOfConsumedMolecules() {
 	  return 0;
-  }	
+  }
+	
+	public static int count() {
+		return counter;
+	}
 }

@@ -21,16 +21,17 @@ public class Reactor extends Thread{
 	@Override
 	public void run() {
 	  super.run();
+	  
+	  int numberOfRegisteredReactions = registeredReactions.size();
 
 	  System.out.println("Possible reactant counts: "+reactantCounts);
 	  while (true){
-	  	int numberOfReactants = reactantCounts.get(generator.nextInt(reactantCounts.size()));
+	  	Reaction reaction = registeredReactions.get(generator.nextInt(numberOfRegisteredReactions));
+	  	
+	  	int numberOfReactants=reaction.numberOfConsumedMolecules();
 	  	MoleculeSet substrates = molecules.dice(numberOfReactants);
-	  	//System.out.println("substrates: "+substrates);
-	  	Vector<Reaction> suitableReactions=findSuitableReactions(substrates);	  
-	  	Reaction reaction=diceReaction(suitableReactions);
 	  	try {
-	      apply(reaction,substrates);
+	  		if (reaction.isSuitable(substrates))apply(reaction,substrates);
       } catch (OutOfMoleculesException e) {
       	e.printStackTrace();
       	break;
@@ -85,7 +86,6 @@ public class Reactor extends Thread{
   }
 
 	private static void evaluate(Reactor reactor) {
-		System.out.print(reactor.molecules);
-		System.out.println(" exported: "+AAAAA_Outflow.counter); //*/
+		System.out.println(reactor.molecules.hist());
   }
 }

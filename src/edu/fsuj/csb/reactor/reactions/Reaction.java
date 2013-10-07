@@ -1,24 +1,15 @@
 package edu.fsuj.csb.reactor.reactions;
 
-import java.util.Map.Entry;
-import java.util.TreeMap;
-
 import edu.fsuj.csb.reactor.MoleculeSet;
-import edu.fsuj.reactor.molecules.Molecule;
 
 public abstract class Reaction {
 
 	public abstract boolean isSuitable(MoleculeSet substrates);
-	public abstract MoleculeSet balance(MoleculeSet substrates);
 	//public abstract MoleculeSet consumedMolecules(MoleculeSet substrates);
 	public abstract int numberOfConsumedMolecules();
 	
-	protected int count(TreeMap<Molecule, Integer> molecules) {
-		int sum=0;
-		for (Entry<Molecule, Integer> m:molecules.entrySet()){
-			Integer v = m.getValue();
-			if (v!=null) sum+=v;
-		}			
-	  return sum;
-  }
+	public abstract MoleculeSet balance(MoleculeSet substrates);
+	public static int count(){
+		return 0;
+	}
 }
