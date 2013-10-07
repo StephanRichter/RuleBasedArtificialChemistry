@@ -36,7 +36,7 @@ public class Reactor extends Thread{
 	  //System.out.println("Trying to apply "+reaction.getClass().getSimpleName()+" on "+substrates);		
 	  molecules.modify(reaction.balance(substrates));
 		//System.out.println("Molecule set: "+molecules);
-	  Thread.sleep(100);
+	  //Thread.sleep(100);
   }
 	
 	private Reaction diceReaction(Vector<Reaction> suitableReactions) {
@@ -61,6 +61,7 @@ public class Reactor extends Thread{
 		reactor.register(new InflowReaction(A));
 		reactor.register(new A_Condensation());
 		reactor.register(new PolymerBreakdown(generator));
+		reactor.register(new AAAAA_Outflow());
 		reactor.start();
 		
 		while (true){
@@ -76,6 +77,7 @@ public class Reactor extends Thread{
   }
 
 	private static void evaluate(Reactor reactor) {
-		System.out.println(reactor.molecules);	  
+		System.out.print(reactor.molecules);
+		System.out.println(" exported: "+AAAAA_Outflow.counter);
   }
 }

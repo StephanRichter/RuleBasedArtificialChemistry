@@ -11,7 +11,7 @@ public class MoleculeSet {
 	private static Random generator;
 	TreeMap<Molecule,Integer> molecules=new TreeMap<Molecule, Integer>(ObjectComparator.get());
 
-	public void add(Molecule m) {
+	public synchronized void add(Molecule m) {
 		Integer count = molecules.get(m);
 		if (count==null) count=0;
 		molecules.put(m, count+1);
@@ -56,7 +56,7 @@ public class MoleculeSet {
 		generator=g;
   }
 
-	public void modify(MoleculeSet moleculeSet) {
+	public synchronized void modify(MoleculeSet moleculeSet) {
 		//System.out.println("adding "+moleculeSet+" to "+molecules);
 		for (Entry<Molecule, Integer> entry:moleculeSet.molecules.entrySet()){
 			Molecule mol = entry.getKey();
@@ -72,19 +72,6 @@ public class MoleculeSet {
 		//System.out.println("result: "+molecules);
   }
 
-	public void remove(MoleculeSet moleculeSet) throws OutOfMoleculesException {
-		for (Entry<Molecule, Integer> entry:moleculeSet.molecules.entrySet()){
-			Molecule mol = entry.getKey();
-			Integer count = molecules.get(mol);
-			if (count==null) throw new OutOfMoleculesException(mol);
-			count-=entry.getValue();
-			if (count<0) throw new OutOfMoleculesException(mol);
-			if (count==0){
-				molecules.remove(mol);
-			} else molecules.put(mol, count);
-		}  
-  }
-
 	public Molecule first() {
 	  return molecules.firstEntry().getKey();
   }
@@ -98,13 +85,14 @@ public class MoleculeSet {
 	  return molecules.entrySet();
   }
 	
-	public String toString() {
+	public synchronized String toString() {
 	  return molecules.toString();
 	}
 
-	public void invert() {
+	public MoleculeSet invert() {
 		for (Entry<Molecule, Integer> entry:molecules.entrySet()){
 			entry.setValue(-entry.getValue());
 		}
+		return this;
   }
 }
