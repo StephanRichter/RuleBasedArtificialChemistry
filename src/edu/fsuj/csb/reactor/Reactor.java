@@ -1,5 +1,6 @@
 package edu.fsuj.csb.reactor;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.Vector;
 
@@ -45,7 +46,7 @@ public class Reactor extends Thread{
 	  //System.out.println("Trying to apply "+reaction.getClass().getSimpleName()+" on "+substrates);		
 	  molecules.modify(reaction.balance(substrates));
 		//System.out.println("Molecule set: "+molecules);
-	  //Thread.sleep(100);
+	  //Thread.sleep(1);
   }
 	
 	private Reaction diceReaction(Vector<Reaction> suitableReactions) {
@@ -64,18 +65,19 @@ public class Reactor extends Thread{
 
 	public static void main(String[] args) throws InterruptedException {
 		MoleculeSet.setRandom(generator);
+		Reaction.setRandom(generator);
 		Molecule A=new MoleculeA();
 		
 		Reactor reactor=new Reactor();		
 		reactor.register(new InflowReaction(A));
 		reactor.register(new A_Condensation());
-		reactor.register(new PolymerBreakdown(generator));
+		reactor.register(new PolymerBreakdown());
 		reactor.register(new AAAAA_Outflow());
 		reactor.start();
 		
 		while (true){
 			evaluate(reactor);
-			Thread.sleep(1000);
+			Thread.sleep(100);
 		}
 	}
 
@@ -86,6 +88,7 @@ public class Reactor extends Thread{
   }
 
 	private static void evaluate(Reactor reactor) {
+		System.out.println(reactor.molecules);
 		System.out.println(reactor.molecules.hist());
   }
 }

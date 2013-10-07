@@ -16,8 +16,8 @@ public class InflowReaction extends Reaction {
   }
 
 	@Override
-  public boolean isSuitable(MoleculeSet substrates) {
-	  return true;
+  public boolean isSuitable(MoleculeSet substrates) {		
+	  return generator.nextInt(100)<30;
   }
 
 	@Override

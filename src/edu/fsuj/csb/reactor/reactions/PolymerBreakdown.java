@@ -1,24 +1,18 @@
 package edu.fsuj.csb.reactor.reactions;
 
-import java.util.Random;
-
 import edu.fsuj.csb.reactor.MoleculeSet;
 import edu.fsuj.reactor.molecules.Polymer;
 
 public class PolymerBreakdown extends Reaction {
 
 	private static int counter=0;
-	private Random generator;
-
-	public PolymerBreakdown(Random generator) {
-		this.generator=generator;
-  }
 
 	@Override
 	public boolean isSuitable(MoleculeSet substrates) {
 		if (substrates.size()!=1) return false;
-		if (substrates.first().formula().length()<2) return false;
-		return true;
+		int l=substrates.first().formula().length();
+		int r=generator.nextInt(l);
+		return r>1;
   }
 
 	@Override

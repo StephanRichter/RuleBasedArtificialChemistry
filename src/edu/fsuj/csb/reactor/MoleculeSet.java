@@ -114,7 +114,38 @@ public class MoleculeSet {
 		return this;
   }
 
-	public String hist() {
-	  return null;
+	public synchronized String hist() {
+		int height=40;
+		int width=60;
+		int max=0;
+		int length=0;
+		for (Entry<Molecule, Integer> entry:molecules.entrySet()){
+			int dummy=entry.getValue();			
+			if (dummy>max) max=dummy;
+			dummy=entry.getKey().formula().length();
+			if (dummy>length)length=dummy;
+		}
+		if (length>width) length=width;
+		char[][] display=new char[height][length];
+		for (int x=0; x<length; x++){
+			for (int y=0; y<height; y++){
+				display[y][x]=' ';
+			}
+		}
+		for (Entry<Molecule, Integer> entry:molecules.entrySet()){
+			int x=entry.getKey().formula().length()-1;
+			if (x>=length) continue;
+			int h=entry.getValue()*height/max;
+			for (int y=0; y<height; y++){
+				if (y<h) display[y][x]='❚';
+			}
+		}
+		StringBuffer sb=new StringBuffer();
+		for (int y=0; y<height; y++){
+			sb.append(display[height-y-1]);
+			sb.append("\n");
+		}
+		for (int i=0; i<length; i++) sb.append("-");
+		return sb.toString();
   }
 }
