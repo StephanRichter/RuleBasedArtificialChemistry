@@ -77,7 +77,7 @@ public class Reactor extends Thread{
 		
 		while (true){
 			evaluate(reactor);
-			Thread.sleep(100);
+			Thread.sleep(200);
 		}
 	}
 
@@ -88,7 +88,6 @@ public class Reactor extends Thread{
   }
 
 	private static void evaluate(Reactor reactor) {
-		System.out.println(reactor.molecules);
 		System.out.println(reactor.molecules.hist());
   }
 }

@@ -115,8 +115,8 @@ public class MoleculeSet {
   }
 
 	public synchronized String hist() {
-		int height=40;
-		int width=60;
+		int height=46;
+		int width=120;
 		int max=0;
 		int length=0;
 		for (Entry<Molecule, Integer> entry:molecules.entrySet()){
@@ -141,6 +141,8 @@ public class MoleculeSet {
 			}
 		}
 		StringBuffer sb=new StringBuffer();
+		for (int i=0; i<length; i++) sb.append(" ");
+		sb.append("\n");
 		for (int y=0; y<height; y++){
 			sb.append(display[height-y-1]);
 			sb.append("\n");
