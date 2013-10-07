@@ -1,26 +1,23 @@
 package edu.fsuj.csb.reactor;
 
-import java.util.TreeMap;
-
-import de.srsoftware.tools.ObjectComparator;
 
 public class InflowReaction extends Reaction {
 	
 	
-	TreeMap<Molecule, Integer> production;
+	MoleculeSet production;
 
 	public InflowReaction(Molecule type) {
-		production=new TreeMap<Molecule, Integer>(ObjectComparator.get());
-		production.put(type, 1);
+		production=new MoleculeSet();
+		production.add(type);
   }
 
 	@Override
-  public boolean isSuitable(TreeMap<Molecule, Integer> substrates) {
+  public boolean isSuitable(MoleculeSet substrates) {
 	  return true;
   }
 
 	@Override
-  public TreeMap<Molecule, Integer> producedMolecules(TreeMap<Molecule, Integer> substrates) {
+  public MoleculeSet balance(MoleculeSet substrates) {
 	  return production;
   }
 
