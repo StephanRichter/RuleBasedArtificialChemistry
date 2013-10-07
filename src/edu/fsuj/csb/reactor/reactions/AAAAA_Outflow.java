@@ -8,7 +8,7 @@ public class AAAAA_Outflow extends Reaction {
 	
 	public boolean isSuitable(MoleculeSet substrates) {
 		if (substrates.size()!=1) return false;
-		if (!substrates.first().formula().equals("AAAAA")) return false;
+		if (!substrates.first().formula().equals("AAA")) return false;
 		return true;
 	}
 

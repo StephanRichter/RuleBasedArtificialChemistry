@@ -1,6 +1,5 @@
 package edu.fsuj.csb.reactor;
 
-import java.io.IOException;
 import java.util.Random;
 import java.util.Vector;
 
@@ -47,20 +46,6 @@ public class Reactor extends Thread{
 	  //Thread.sleep(1);
   }
 	
-	private Reaction diceReaction(Vector<Reaction> suitableReactions) {
-		int l=suitableReactions.size();
-		int i=generator.nextInt(l);
-	  return suitableReactions.get(i);
-  }
-
-	private Vector<Reaction> findSuitableReactions(MoleculeSet substrates) {		
-		Vector<Reaction> result=new Vector<Reaction>();
-	  for (Reaction type:registeredReactions){
-	  	if (type.isSuitable(substrates)) result.add(type);
-	  }
-		return result;
-  }
-
 	public static void main(String[] args) throws InterruptedException {
 		MoleculeSet.setRandom(generator);
 		Reaction.setRandom(generator);

@@ -128,6 +128,7 @@ public class MoleculeSet {
 			}
 		}
 		if (length>width) length=width;
+		if (max<height) height=max;
 		char[][] display=new char[height][length];
 		for (int x=0; x<length; x++){
 			for (int y=0; y<height; y++){

@@ -8,7 +8,6 @@ public class InflowReaction extends Reaction {
 	
 	
 	private static int counter=0;
-	private static boolean stopped=false;
 	MoleculeSet production;
 
 	public InflowReaction(Molecule type) {
@@ -18,8 +17,7 @@ public class InflowReaction extends Reaction {
 
 	@Override
   public boolean isSuitable(MoleculeSet substrates) {
-		return !stopped;
-	  //return generator.nextInt(100)<30;
+	  return generator.nextInt(100)<30;
   }
 
 	@Override
@@ -36,8 +34,4 @@ public class InflowReaction extends Reaction {
 	public static int count() {
 		return counter;
 	}
-
-	public static void stop() {
-		stopped=true;
-  }
 }
