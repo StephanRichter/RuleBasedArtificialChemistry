@@ -28,12 +28,10 @@ public class PolymerBreakdown extends Reaction {
 	@Override
 	public MoleculeSet balance(MoleculeSet balance) {
 		String formula = balance.first().formula();
-		System.out.print("Breaking down A["+formula.length()+"] into ");
 		int split=1+generator.nextInt(formula.length()-1);		
 		balance.invert();
 		Polymer p1 = new Polymer(formula.substring(0, split));
 		Polymer p2 = new Polymer(formula.substring(split));
-		System.out.println("A["+p1.scale()+"] + A["+p2.scale()+"]");
 		balance.add(p1);
 		balance.add(p2);
 		counter++;
