@@ -39,7 +39,7 @@ public class Reactor extends Thread implements Observable{
       	e.printStackTrace();
       	break;
       }
-		  InflowReaction.setActive(molecules.get(inflowMolecule)<1000);
+		  InflowReaction.setActive(molecules.get(inflowMolecule)<100);
 	  }
 	}	
 
@@ -53,15 +53,13 @@ public class Reactor extends Thread implements Observable{
 	public static void main(String[] args) throws InterruptedException {
 		MoleculeSet.setRandom(generator);
 		Reaction.setRandom(generator);
-		int outflowLength=30;
 		inflowMolecule=new MoleculeA();
-		A_Polymer outflowMolecue = new A_Polymer(outflowLength);
 		
 		Reactor reactor=new Reactor();		
 		reactor.register(new InflowReaction(inflowMolecule));
 		reactor.register(new PolymerElongation());
-		reactor.register(new PolymerBreakdown(outflowLength+5));
-		reactor.register(new OutflowReaction(outflowMolecue));
+		reactor.register(new PolymerBreakdown(100));
+		reactor.register(new OutflowReaction(new A_Polymer(30)));
 		reactor.start();
 		
 		new Observer(reactor);

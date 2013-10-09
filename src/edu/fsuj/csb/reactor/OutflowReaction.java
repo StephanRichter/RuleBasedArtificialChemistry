@@ -20,14 +20,13 @@ public class OutflowReaction extends Reaction {
 
 	@Override
   public boolean isSuitable(MoleculeSet substrates) {
-		if (substrates.size()!=1) return false;		
-	  return substrates.first().equals(outflowMoleculeType);
+		if (substrates.size()!=1) return false;
+		return substrates.first().toString().equals(outflowMoleculeType.toString());
   }
 
 	@Override
   public MoleculeSet balance(MoleculeSet substrates) {
 		counter++;
-		System.out.println("Exporting A["+outflowMoleculeType.scale()+"]");
 	  return consumption;
   }
 
