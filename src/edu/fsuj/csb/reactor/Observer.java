@@ -25,12 +25,22 @@ public class Observer extends JFrame {
 		  super.paint(g);
 		  SnapShot snap=dataSource.snapShot();
 		  int width=getWidth()-40;
-		  int bottom=getHeight()-20;
+		  int bottom=getHeight()-30;
 		  double max=snap.max();
 		  double yscale=(bottom-50)/max;
 		  int xscale=1;
-		  while ((xscale+1)*snap.size()<width) xscale++;
-		  System.out.println(snap.max());
+		  while ((xscale+1)*snap.size()<width) xscale++;	  
+		  
+		  int xd=snap.size()/10;
+		  if (xd<1) xd=1;
+		  
+		  int x=0;
+		  while (x*xscale<width){
+		  	g.drawLine(10+x*xscale, bottom, 10+x*xscale, bottom+15);
+		  	g.drawString(""+(x+1), 15+x*xscale, bottom +20);
+		  	x+=xd;
+		  }
+		  
 		  
 		  int imax=(int)max/10;
 		  if (imax==0) imax=1;
@@ -40,7 +50,7 @@ public class Observer extends JFrame {
 		  	g.drawString(""+i, width+10, bottom-y+5);
 		  }
 		  
-		  int x=10;		  
+		  x=10;		  
 		  for (int i=0; i<snap.size(); i++) {
 		  	for (int j=0; j<xscale; j++){
 		  		g.drawLine(x, bottom, x, bottom-(int)(snap.get(i)*yscale));
