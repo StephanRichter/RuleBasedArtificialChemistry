@@ -18,7 +18,7 @@ public class MoleculeSet implements Observable{
 		molecules.put(m, count+1);
   }
 
-	public int size() {
+	public synchronized int size() {
 		int sum=0;
 		for (Entry<Molecule, Integer> entry:molecules.entrySet()){
 			Integer val = entry.getValue();
@@ -28,7 +28,7 @@ public class MoleculeSet implements Observable{
 		return sum;
   }
 	
-	MoleculeSet dice(int numberOfReactants) {
+	synchronized MoleculeSet dice(int numberOfReactants) {
 		//System.out.println("Selecting "+numberOfReactants+" reactants out of "+this);
 		int poolSize=size();
 		MoleculeSet result = new MoleculeSet();
@@ -55,7 +55,7 @@ public class MoleculeSet implements Observable{
 		return result;
   }
 
-	private Molecule get(int index) {
+	private synchronized Molecule get(int index) {
 		int counter=0;
 		for (Entry<Molecule, Integer> entry:molecules.entrySet()){
 			counter+=entry.getValue();
@@ -66,7 +66,7 @@ public class MoleculeSet implements Observable{
 	  return null;
   }
 
-	Integer get(Molecule m) {
+	synchronized Integer get(Molecule m) {
 		Integer result = molecules.get(m);
 		if (result==null) return 0;
 	  return result;
@@ -96,12 +96,12 @@ public class MoleculeSet implements Observable{
 	  return molecules.firstEntry().getKey();
   }
 
-	public Set<Molecule> types() {
+	public synchronized Set<Molecule> types() {
 	  // TODO Auto-generated method stub
 	  return molecules.keySet();
   }
 
-	public Set<Entry<Molecule, Integer>> entrySet() {
+	public synchronized Set<Entry<Molecule, Integer>> entrySet() {
 	  return molecules.entrySet();
   }
 	
@@ -109,59 +109,27 @@ public class MoleculeSet implements Observable{
 	  return molecules.toString();
 	}
 
-	public MoleculeSet invert() {
+	public synchronized MoleculeSet invert() {
 		for (Entry<Molecule, Integer> entry:molecules.entrySet()){
 			entry.setValue(-entry.getValue());
 		}
 		return this;
   }
 
-	public synchronized String hist() {
-		int height=46;
-		int width=120;
-		int max=0;
-		int length=0;
-		for (Entry<Molecule, Integer> entry:molecules.entrySet()){
-			int dummy=entry.getValue();			
-			if (dummy>max) max=dummy;
-			if (dummy>0){
-				dummy=entry.getKey().formula().length();
-				if (dummy>length) length=dummy;
-			}
-		}
-		if (length>width) length=width;
-		if (max<height) height=max;
-		char[][] display=new char[height][length];
-		for (int x=0; x<length; x++){
-			for (int y=0; y<height; y++){
-				display[y][x]=' ';
-			}
-		}
-		for (Entry<Molecule, Integer> entry:molecules.entrySet()){
-			int x=entry.getKey().formula().length();
-			if (x>=length) continue;
-			int h=(entry.getValue()*height)/max;
-			for (int y=0; y<height; y++){
-				if (y<h) display[y][x-1]='❚';
-			}
-		}
-		StringBuffer sb=new StringBuffer();
-		for (int i=0; i<length; i++) sb.append(" ");
-		sb.append("\n");
-		for (int y=0; y<height; y++){
-			sb.append(display[height-y-1]);
-			sb.append("\n");
-		}
-		for (int i=0; i<length; i++) sb.append("-");
-		return sb.toString();
-  }
-
 	@Override
   public synchronized SnapShot snapShot() {
 		int length=0;
 		int max=0;
+		int indexes=0;
+		TreeMap<String,Integer> formulaMap=new TreeMap<String, Integer>(ObjectComparator.get());
 		for (Entry<Molecule, Integer> entry:molecules.entrySet()){
-			int scale=entry.getKey().scale();
+			String formula=entry.getKey().identifier();
+			
+			Integer scale=formulaMap.get(formula);
+			if (scale==null){
+				scale=++indexes;
+				formulaMap.put(formula, scale);
+			}			
 			if (scale>length) length=scale;
 			int val=entry.getValue();
 			if (val>max) max=val;
@@ -169,7 +137,23 @@ public class MoleculeSet implements Observable{
 		int[] values=new int[length];
 		for (int i=0; i<length; i++) values[i]=0;
 		for (Entry<Molecule, Integer> entry:molecules.entrySet()){
-			values[entry.getKey().scale()-1]=entry.getValue();
+			Integer v = entry.getValue();
+			if (v==null){
+				System.out.println(this);
+				System.exit(0);
+			}
+			String k = entry.getKey().identifier();
+			if (k==null){
+				System.out.println(this);
+				System.exit(0);
+			}
+			Integer i = formulaMap.get(k);
+			if (i==null){
+				System.out.println(k);
+				System.out.println(this);
+				System.exit(0);
+			}
+			values[formulaMap.get(k)-1]=v;
 		}
 		SnapShot result=new SnapShot(values,max);
 	  return result;

@@ -5,12 +5,16 @@ import java.util.Vector;
 
 import edu.fsuj.csb.reactor.reactions.ActiveteNucleotide;
 import edu.fsuj.csb.reactor.reactions.BuildNucleoside;
+import edu.fsuj.csb.reactor.reactions.DNAElongation;
 import edu.fsuj.csb.reactor.reactions.InflowReaction;
+import edu.fsuj.csb.reactor.reactions.OutflowReaction;
 import edu.fsuj.csb.reactor.reactions.Reaction;
 import edu.fsuj.reactor.molecules.ATP;
 import edu.fsuj.reactor.molecules.Adenine;
 import edu.fsuj.reactor.molecules.Cytosine;
+import edu.fsuj.reactor.molecules.DNA;
 import edu.fsuj.reactor.molecules.Deoxyribose;
+import edu.fsuj.reactor.molecules.Diphosphate;
 import edu.fsuj.reactor.molecules.Guanine;
 import edu.fsuj.reactor.molecules.Molecule;
 import edu.fsuj.reactor.molecules.Nucleotide;
@@ -22,6 +26,8 @@ public class Reactor extends Thread implements Observable {
 	static MoleculeSet molecules=new MoleculeSet();
 	Vector<Integer> reactantCounts=new Vector<Integer>();
 	private int reactorSize=1000;
+	private int latency=0;
+	private boolean clearReactions;
 	static Random generator=new Random(1);
 	private static Molecule inflowMolecule;
 
@@ -35,11 +41,6 @@ public class Reactor extends Thread implements Observable {
 	  while (true){
 	  	Reaction reaction = registeredReactions.get(generator.nextInt(numberOfRegisteredReactions));
 	  	
-	  	if (reaction instanceof InflowReaction){
-	  		InflowReaction ifr = (InflowReaction) reaction;
-	  		ifr.setActive(molecules.size()<reactorSize);
-	  	}
-	  	
 	  	int numberOfReactants=reaction.numberOfConsumedMolecules();
 	  	MoleculeSet substrates = molecules.dice(numberOfReactants);
 	  	try {
@@ -48,6 +49,18 @@ public class Reactor extends Thread implements Observable {
       	e.printStackTrace();
       	break;
       }
+	  	
+	  	if (reaction instanceof InflowReaction){
+	  		InflowReaction ifr = (InflowReaction) reaction;
+	  		ifr.setActive(molecules.size()<reactorSize);
+	  	}
+
+	  	if (latency>0){
+	  		try {
+	        Thread.sleep(latency);
+        } catch (InterruptedException e) {
+        }
+	  	}
 	  }
 	}	
 
@@ -60,25 +73,48 @@ public class Reactor extends Thread implements Observable {
 	
 	public static void main(String[] args) throws InterruptedException {
 		MoleculeSet.setRandom(generator);
-		Reaction.setRandom(generator);
-		
+		Reaction.setRandom(generator);		
 		Reactor reactor=new Reactor();
-		reactor.setSize(1000);
-		reactor.register(new InflowReaction(new ATP()));
+		reactor.setSize(600);
+		reactor.setLatency(0);
+		reactor.enableClearReactions(false);
+		
+		DNA primer=new DNA("");
+		molecules.add(primer);
+		
+		InflowReaction atpInflow = new InflowReaction(new ATP());
+		
+		reactor.register(atpInflow);
 		reactor.register(new InflowReaction(new Adenine()));
 		reactor.register(new InflowReaction(new Cytosine()));
 		reactor.register(new InflowReaction(new Guanine()));
 		reactor.register(new InflowReaction(new Thymin()));
-		reactor.register(new InflowReaction(new Deoxyribose()));
-		
+		reactor.register(new InflowReaction(new Deoxyribose()));		
 		reactor.register(new BuildNucleoside());
 		reactor.register(new ActiveteNucleotide());
-		//reactor.register(new OutflowReaction(new A_Polymer(1)));
+		reactor.register(new DNAElongation());		
+		reactor.register(new OutflowReaction(new Diphosphate()));
 		reactor.start();
 		
 		new Observer(molecules);
 		(new Observer(reactor)).setLatency(500);
+		while (true) {
+			String s=molecules.toString();
+			if (!s.contains("ATP")){
+				System.err.println(primer.sequence().length()+", \t"+s);
+				atpInflow.setActive(true);
+			} else System.out.println(primer.sequence().length()+", \t"+s);
+			Thread.sleep(1000);
+		}
 	}
+
+	private void enableClearReactions(boolean b) {
+	  clearReactions=b;	  
+  }
+
+	private void setLatency(int l) {
+		latency=l;	  
+  }
 
 	private void setSize(int s) {
 	  reactorSize=s;
@@ -99,7 +135,7 @@ public class Reactor extends Thread implements Observable {
 	  	int c=r.count();
 	  	if (c>max) max=c;
 	  	values[i++]=c;
-	  	r.resetCounter();
+	  	if (clearReactions) r.resetCounter();
 	  }
 		return new SnapShot(values, max);
   }
