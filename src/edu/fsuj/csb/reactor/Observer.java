@@ -13,7 +13,7 @@ public class Observer extends JFrame {
    * 
    */
   private static final long serialVersionUID = -7132922654936912916L;
-	private int refreshLatency=100;
+	private int refreshLatency=50;
 	private Observable dataSource;	
 	private Vector<Double> maxHistory=new Vector<Double>();
 	private Vector<Integer> sizeHistory=new Vector<Integer>();
@@ -41,7 +41,7 @@ public class Observer extends JFrame {
 				if (s>maxSize) maxSize=s;
 			}
 						
-		  int width=getWidth()-40;
+		  int width=getWidth()-60;
 		  int bottom=getHeight()-30;		  
 		  double yscale=(bottom-50)/max;
 		  int xscale=1;
@@ -60,7 +60,7 @@ public class Observer extends JFrame {
 		  
 		  int imax=(int)max/10;
 		  if (imax==0) imax=1;
-		  for (int i=0; i<max; i+=imax){
+		  for (int i=0; i<=max; i+=imax){
 		  	int y=(int)(i*yscale);
 		  	g.drawLine(5, bottom-y, width+5, bottom-y);
 		  	g.drawString(""+i, width+10, bottom-y+5);
