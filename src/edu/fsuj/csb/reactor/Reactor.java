@@ -7,6 +7,7 @@ import edu.fsuj.csb.reactor.reactions.A_Condensation;
 import edu.fsuj.csb.reactor.reactions.A_Outflow;
 import edu.fsuj.csb.reactor.reactions.InflowReaction;
 import edu.fsuj.csb.reactor.reactions.PolymerBreakdown;
+import edu.fsuj.csb.reactor.reactions.PolymerElongation;
 import edu.fsuj.csb.reactor.reactions.Reaction;
 import edu.fsuj.reactor.molecules.A_Polymer;
 import edu.fsuj.reactor.molecules.Molecule;
@@ -38,13 +39,7 @@ public class Reactor extends Thread implements Observable{
       	e.printStackTrace();
       	break;
       }
-		  InflowReaction.setActive(molecules.get(inflowMolecule)<100);
-		  try {
-	      Thread.sleep(1);
-      } catch (InterruptedException e) {
-	      // TODO Auto-generated catch block
-	      e.printStackTrace();
-      }
+		  InflowReaction.setActive(molecules.get(inflowMolecule)<1000);
 	  }
 	}	
 
@@ -64,7 +59,7 @@ public class Reactor extends Thread implements Observable{
 		
 		Reactor reactor=new Reactor();		
 		reactor.register(new InflowReaction(inflowMolecule));
-		reactor.register(new A_Condensation());
+		reactor.register(new PolymerElongation());
 		reactor.register(new PolymerBreakdown(outflowLength+5));
 		reactor.register(new OutflowReaction(outflowMolecue));
 		reactor.start();
