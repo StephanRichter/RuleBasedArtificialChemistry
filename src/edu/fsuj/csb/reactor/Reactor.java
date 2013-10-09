@@ -3,15 +3,18 @@ package edu.fsuj.csb.reactor;
 import java.util.Random;
 import java.util.Vector;
 
+import edu.fsuj.csb.reactor.reactions.ActiveteNucleotide;
+import edu.fsuj.csb.reactor.reactions.BuildNucleoside;
 import edu.fsuj.csb.reactor.reactions.InflowReaction;
-import edu.fsuj.csb.reactor.reactions.OutflowReaction;
-import edu.fsuj.csb.reactor.reactions.PolymerBreakdown;
-import edu.fsuj.csb.reactor.reactions.PolymerCutoff;
-import edu.fsuj.csb.reactor.reactions.PolymerElongation;
 import edu.fsuj.csb.reactor.reactions.Reaction;
-import edu.fsuj.reactor.molecules.A_Polymer;
+import edu.fsuj.reactor.molecules.ATP;
+import edu.fsuj.reactor.molecules.Adenine;
+import edu.fsuj.reactor.molecules.Cytosine;
+import edu.fsuj.reactor.molecules.Deoxyribose;
+import edu.fsuj.reactor.molecules.Guanine;
 import edu.fsuj.reactor.molecules.Molecule;
-import edu.fsuj.reactor.molecules.MoleculeA;
+import edu.fsuj.reactor.molecules.Nucleotide;
+import edu.fsuj.reactor.molecules.Thymin;
 
 public class Reactor extends Thread implements Observable {
 	
@@ -61,9 +64,16 @@ public class Reactor extends Thread implements Observable {
 		
 		Reactor reactor=new Reactor();
 		reactor.setSize(1000);
-		reactor.register(new InflowReaction(new A_Polymer(10)));
-		reactor.register(new PolymerCutoff());
-		reactor.register(new OutflowReaction(new A_Polymer(1)));
+		reactor.register(new InflowReaction(new ATP()));
+		reactor.register(new InflowReaction(new Adenine()));
+		reactor.register(new InflowReaction(new Cytosine()));
+		reactor.register(new InflowReaction(new Guanine()));
+		reactor.register(new InflowReaction(new Thymin()));
+		reactor.register(new InflowReaction(new Deoxyribose()));
+		
+		reactor.register(new BuildNucleoside());
+		reactor.register(new ActiveteNucleotide());
+		//reactor.register(new OutflowReaction(new A_Polymer(1)));
 		reactor.start();
 		
 		new Observer(molecules);

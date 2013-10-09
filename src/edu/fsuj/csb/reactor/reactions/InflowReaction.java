@@ -6,7 +6,7 @@ import edu.fsuj.reactor.molecules.Molecule;
 
 public class InflowReaction extends Reaction {
 	
-	private static boolean active=true;
+	private boolean active=true;
 	MoleculeSet production;
 
 	public InflowReaction(Molecule type) {
@@ -29,7 +29,7 @@ public class InflowReaction extends Reaction {
 	  return 0;
   }
 	
-	public static void setActive(boolean b) {
+	public void setActive(boolean b) {
 		active=b;
   }
 }

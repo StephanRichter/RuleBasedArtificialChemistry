@@ -30,7 +30,7 @@ public abstract class Reaction {
 	  counter=0;	  
   }
 	public void pause(MoleculeSet balance) {
-		System.out.println(balance);
+		System.out.println(getClass().getSimpleName()+": "+balance);
 		try {
 	    Thread.sleep(10000);
     } catch (InterruptedException e) {
