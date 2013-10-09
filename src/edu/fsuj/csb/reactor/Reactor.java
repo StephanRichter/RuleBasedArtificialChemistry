@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import edu.fsuj.csb.reactor.reactions.InflowReaction;
 import edu.fsuj.csb.reactor.reactions.PolymerBreakdown;
+import edu.fsuj.csb.reactor.reactions.PolymerCutoff;
 import edu.fsuj.csb.reactor.reactions.PolymerElongation;
 import edu.fsuj.csb.reactor.reactions.Reaction;
 import edu.fsuj.reactor.molecules.A_Polymer;
@@ -51,13 +52,14 @@ public class Reactor extends Thread implements Observable {
 	public static void main(String[] args) throws InterruptedException {
 		MoleculeSet.setRandom(generator);
 		Reaction.setRandom(generator);
-		inflowMolecule=new MoleculeA();
-		
+		inflowMolecule =
+		outflowMolecule=
 		Reactor reactor=new Reactor();		
 		reactor.register(new InflowReaction(inflowMolecule));
-		reactor.register(new PolymerElongation());
-		reactor.register(new PolymerBreakdown(100));
-		reactor.register(new OutflowReaction(new A_Polymer(30)));
+
+		
+		
+		reactor.register(new OutflowReaction(outflowMolecule));
 		reactor.start();
 		
 		new Observer(molecules);
