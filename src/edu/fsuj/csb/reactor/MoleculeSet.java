@@ -8,7 +8,7 @@ import java.util.TreeMap;
 import de.srsoftware.tools.ObjectComparator;
 import edu.fsuj.reactor.molecules.Molecule;
 
-public class MoleculeSet {
+public class MoleculeSet implements Observable{
 	private static Random generator;
 	TreeMap<Molecule,Integer> molecules=new TreeMap<Molecule, Integer>(ObjectComparator.get());
 
@@ -152,5 +152,24 @@ public class MoleculeSet {
 		}
 		for (int i=0; i<length; i++) sb.append("-");
 		return sb.toString();
+  }
+
+	@Override
+  public synchronized SnapShot snapShot() {
+		int length=0;
+		int max=0;
+		for (Entry<Molecule, Integer> entry:molecules.entrySet()){
+			int scale=entry.getKey().scale();
+			if (scale>length) length=scale;
+			int val=entry.getValue();
+			if (val>max) max=val;
+		}
+		int[] values=new int[length];
+		for (int i=0; i<length; i++) values[i]=0;
+		for (Entry<Molecule, Integer> entry:molecules.entrySet()){
+			values[entry.getKey().scale()-1]=entry.getValue();
+		}
+		SnapShot result=new SnapShot(values,max);
+	  return result;
   }
 }

@@ -3,20 +3,20 @@ package edu.fsuj.csb.reactor;
 import java.util.Random;
 import java.util.Vector;
 
-import edu.fsuj.csb.reactor.reactions.AAAAA_Outflow;
-import edu.fsuj.csb.reactor.reactions.A_Condensation;
+import edu.fsuj.csb.reactor.reactions.A_Outflow;
 import edu.fsuj.csb.reactor.reactions.InflowReaction;
 import edu.fsuj.csb.reactor.reactions.PolymerBreakdown;
 import edu.fsuj.csb.reactor.reactions.Reaction;
+import edu.fsuj.reactor.molecules.A_Polymer;
 import edu.fsuj.reactor.molecules.Molecule;
-import edu.fsuj.reactor.molecules.MoleculeA;
 
-public class Reactor extends Thread{
+public class Reactor extends Thread implements Observable{
 	
 	Vector<Reaction> registeredReactions=new Vector<Reaction>();
 	MoleculeSet molecules=new MoleculeSet();
 	Vector<Integer> reactantCounts=new Vector<Integer>();
 	static Random generator=new Random(1);
+	private static Molecule A20;
 
 	@Override
 	public void run() {
@@ -37,31 +37,33 @@ public class Reactor extends Thread{
       	break;
       }
 	  }
+	  InflowReaction.setActive(molecules.get(A20)<500);
 	}	
 
 	private void apply(Reaction reaction, MoleculeSet substrates) throws OutOfMoleculesException {
 	  //System.out.println("Trying to apply "+reaction.getClass().getSimpleName()+" on "+substrates);		
 	  molecules.modify(reaction.balance(substrates));
 		//System.out.println("Molecule set: "+molecules);
-	  //Thread.sleep(1);
+	  try {
+	    Thread.sleep(100);
+    } catch (InterruptedException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+    }
   }
 	
 	public static void main(String[] args) throws InterruptedException {
 		MoleculeSet.setRandom(generator);
 		Reaction.setRandom(generator);
-		Molecule A=new MoleculeA();
+		A20=new A_Polymer(50);
 		
 		Reactor reactor=new Reactor();		
-		reactor.register(new InflowReaction(A));
-		reactor.register(new A_Condensation());
+		reactor.register(new InflowReaction(A20));
 		reactor.register(new PolymerBreakdown());
-		reactor.register(new AAAAA_Outflow());
+		reactor.register(new A_Outflow());
 		reactor.start();
 		
-		while (true){
-			evaluate(reactor);
-			Thread.sleep(1000);
-		}
+		new Observer(reactor);
 	}
 
 	private void register(Reaction type) {
@@ -70,7 +72,8 @@ public class Reactor extends Thread{
 		if (!reactantCounts.contains(count)) reactantCounts.add(count);
   }
 
-	private static void evaluate(Reactor reactor) {
-		System.out.println(reactor.molecules.hist());
+	@Override
+  public SnapShot snapShot() {
+	  return molecules.snapShot();
   }
 }

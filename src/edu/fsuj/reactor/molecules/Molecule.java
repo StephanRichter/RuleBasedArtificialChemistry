@@ -7,4 +7,8 @@ public abstract class Molecule {
 	public String toString() {
 	  return formula();
 	}
+
+	public int scale() {
+	  return formula().length();
+  }
 }
