@@ -82,9 +82,10 @@ public class Reactor extends Thread implements Observable {
 		DNA primer=new DNA("");
 		molecules.add(primer);
 		
-		InflowReaction atpInflow = new InflowReaction(new ATP());
+		ATP atp = new ATP();
+		InflowReaction atpInflow;
 		
-		reactor.register(atpInflow);
+		reactor.register(atpInflow= new InflowReaction(atp));
 		reactor.register(new InflowReaction(new Adenine()));
 		reactor.register(new InflowReaction(new Cytosine()));
 		reactor.register(new InflowReaction(new Guanine()));
@@ -98,13 +99,16 @@ public class Reactor extends Thread implements Observable {
 		
 		new Observer(molecules);
 		(new Observer(reactor)).setLatency(500);
+		int counter=0;
 		while (true) {
-			String s=molecules.toString();
-			if (!s.contains("ATP")){
-				System.err.println(primer.sequence().length()+", \t"+s);
-				atpInflow.setActive(true);
-			} else System.out.println(primer.sequence().length()+", \t"+s);
-			Thread.sleep(1000);
+			Integer atpcount = molecules.get(atp);
+			if (atpcount==null || atpcount==0) atpInflow.setActive(true);
+			counter++;
+			Thread.sleep(1);
+			if (counter<1000) continue;
+			counter=0;
+			String s=molecules.toString();			
+			System.out.println(primer.sequence().length()+", \t"+s);
 		}
 	}
 
