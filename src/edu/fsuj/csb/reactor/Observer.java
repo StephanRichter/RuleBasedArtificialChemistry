@@ -14,6 +14,7 @@ public class Observer extends JFrame {
    */
   private static final long serialVersionUID = -7132922654936912916L;
 	private int refreshLatency=50;
+  private int histLength=50;
 	private Observable dataSource;	
 	private Vector<Double> maxHistory=new Vector<Double>();
 	private Vector<Integer> sizeHistory=new Vector<Integer>();
@@ -21,7 +22,6 @@ public class Observer extends JFrame {
 	
 	private class PaintPanel extends JPanel{
     private static final long serialVersionUID = 648033512192629081L;
-	  private int histLength=50;
 
 		public void paint(Graphics g) {
 		  super.paint(g);
@@ -107,4 +107,8 @@ public class Observer extends JFrame {
 		setVisible(true);
 		(new RefreshThread()).start();
 	}
+
+	public void setLatency(int i) {
+		refreshLatency=i;
+  }
 }

@@ -3,8 +3,6 @@ package edu.fsuj.csb.reactor;
 import java.util.Random;
 import java.util.Vector;
 
-import edu.fsuj.csb.reactor.reactions.A_Condensation;
-import edu.fsuj.csb.reactor.reactions.A_Outflow;
 import edu.fsuj.csb.reactor.reactions.InflowReaction;
 import edu.fsuj.csb.reactor.reactions.PolymerBreakdown;
 import edu.fsuj.csb.reactor.reactions.PolymerElongation;
@@ -13,10 +11,10 @@ import edu.fsuj.reactor.molecules.A_Polymer;
 import edu.fsuj.reactor.molecules.Molecule;
 import edu.fsuj.reactor.molecules.MoleculeA;
 
-public class Reactor extends Thread implements Observable{
+public class Reactor extends Thread implements Observable {
 	
 	Vector<Reaction> registeredReactions=new Vector<Reaction>();
-	MoleculeSet molecules=new MoleculeSet();
+	static MoleculeSet molecules=new MoleculeSet();
 	Vector<Integer> reactantCounts=new Vector<Integer>();
 	static Random generator=new Random(1);
 	private static Molecule inflowMolecule;
@@ -62,7 +60,8 @@ public class Reactor extends Thread implements Observable{
 		reactor.register(new OutflowReaction(new A_Polymer(30)));
 		reactor.start();
 		
-		new Observer(reactor);
+		new Observer(molecules);
+		(new Observer(reactor)).setLatency(500);
 	}
 
 	private void register(Reaction type) {
@@ -73,6 +72,15 @@ public class Reactor extends Thread implements Observable{
 
 	@Override
   public SnapShot snapShot() {
-	  return molecules.snapShot();
+		int max=0;		
+	  int[] values=new int[registeredReactions.size()];
+	  int i=0;
+	  for (Reaction r:registeredReactions){
+	  	int c=r.count();
+	  	if (c>max) max=c;
+	  	values[i++]=c;
+	  	r.resetCounter();
+	  }
+		return new SnapShot(values, max);
   }
 }
