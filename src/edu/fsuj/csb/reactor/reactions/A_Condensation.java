@@ -8,8 +8,6 @@ import edu.fsuj.reactor.molecules.Polymer;
 
 public class A_Condensation extends Reaction {
 
-	private static int counter=0;
-
 	@Override
   public boolean isSuitable(MoleculeSet substrates) {
 		if (substrates.size()!=2) return false;
@@ -19,8 +17,7 @@ public class A_Condensation extends Reaction {
 		return true;
   }
 
-  public MoleculeSet balance(MoleculeSet balance) {
-  	counter++;
+  public MoleculeSet getBalance(MoleculeSet balance) {
   	StringBuffer formula=new StringBuffer();
   	for (Entry<Molecule, Integer> substrate:balance.entrySet()){
   		Molecule mol = substrate.getKey();
@@ -38,8 +35,4 @@ public class A_Condensation extends Reaction {
   public int numberOfConsumedMolecules() {
 	  return 2;
   }
-	
-	public static int count() {
-		return counter;
-	}
 }

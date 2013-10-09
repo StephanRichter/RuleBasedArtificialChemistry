@@ -4,8 +4,6 @@ import edu.fsuj.csb.reactor.MoleculeSet;
 
 public class A_Outflow extends Reaction {
 
-	private static int counter=0;
-	
 	public boolean isSuitable(MoleculeSet substrates) {
 		if (substrates.size()!=1) return false;
 		if (!substrates.first().formula().equals("A")) return false;
@@ -13,17 +11,12 @@ public class A_Outflow extends Reaction {
 	}
 
 	@Override
-	public MoleculeSet balance(MoleculeSet substrates) {
-		counter++;
+	public MoleculeSet getBalance(MoleculeSet substrates) {
 		return substrates.invert();
 	}
 
 	@Override
 	public int numberOfConsumedMolecules() {
 		return 1;
-	}
-
-	public static int count() {
-		return counter;
 	}
 }

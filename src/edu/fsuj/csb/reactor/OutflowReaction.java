@@ -5,8 +5,6 @@ import edu.fsuj.reactor.molecules.Molecule;
 
 public class OutflowReaction extends Reaction {
 	
-	
-	private static int counter=0;
 	MoleculeSet consumption;
 	private Molecule outflowMoleculeType;
 	
@@ -25,8 +23,7 @@ public class OutflowReaction extends Reaction {
   }
 
 	@Override
-  public MoleculeSet balance(MoleculeSet substrates) {
-		counter++;
+  public MoleculeSet getBalance(MoleculeSet substrates) {
 	  return consumption;
   }
 
@@ -34,8 +31,4 @@ public class OutflowReaction extends Reaction {
   public int numberOfConsumedMolecules() {
 	  return 1;
   }
-	
-	public static int count() {
-		return counter;
-	}
 }

@@ -5,7 +5,6 @@ import edu.fsuj.reactor.molecules.Polymer;
 
 public class PolymerBreakdown extends Reaction {
 
-	private static int counter=0;
 	private int minLength;
 
 	public PolymerBreakdown(int minLength) {
@@ -26,7 +25,7 @@ public class PolymerBreakdown extends Reaction {
   }
 
 	@Override
-	public MoleculeSet balance(MoleculeSet balance) {
+	public MoleculeSet getBalance(MoleculeSet balance) {
 		String formula = balance.first().formula();
 		int split=1+generator.nextInt(formula.length()-1);		
 		balance.invert();
@@ -34,7 +33,6 @@ public class PolymerBreakdown extends Reaction {
 		Polymer p2 = new Polymer(formula.substring(split));
 		balance.add(p1);
 		balance.add(p2);
-		counter++;
 		return balance;
 	}
 
@@ -43,7 +41,4 @@ public class PolymerBreakdown extends Reaction {
 		return 1;
 	}
 
-	public static int count() {
-		return counter;
-	}
 }

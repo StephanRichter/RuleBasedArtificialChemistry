@@ -6,8 +6,6 @@ import edu.fsuj.reactor.molecules.Molecule;
 
 public class InflowReaction extends Reaction {
 	
-	
-	private static int counter=0;
 	private static boolean active=true;
 	MoleculeSet production;
 
@@ -22,8 +20,7 @@ public class InflowReaction extends Reaction {
   }
 
 	@Override
-  public MoleculeSet balance(MoleculeSet substrates) {
-		counter++;
+  public MoleculeSet getBalance(MoleculeSet substrates) {
 	  return production;
   }
 
@@ -32,10 +29,6 @@ public class InflowReaction extends Reaction {
 	  return 0;
   }
 	
-	public static int count() {
-		return counter;
-	}
-
 	public static void setActive(boolean b) {
 		active=b;
   }
