@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.Vector;
 
 import edu.fsuj.csb.reactor.reactions.InflowReaction;
+import edu.fsuj.csb.reactor.reactions.OutflowReaction;
 import edu.fsuj.csb.reactor.reactions.PolymerBreakdown;
 import edu.fsuj.csb.reactor.reactions.PolymerCutoff;
 import edu.fsuj.csb.reactor.reactions.PolymerElongation;
