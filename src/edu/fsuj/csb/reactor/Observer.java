@@ -17,6 +17,7 @@ public class Observer extends JFrame {
 	private Observable dataSource;	
 	private Vector<Double> maxHistory=new Vector<Double>();
 	private Vector<Integer> sizeHistory=new Vector<Integer>();
+	private PaintPanel drawPanel;
 	
 	private class PaintPanel extends JPanel{
     private static final long serialVersionUID = 648033512192629081L;
@@ -76,28 +77,34 @@ public class Observer extends JFrame {
 		}
 	}
 	
+	private class RefreshThread extends Thread{
+		public void run() {
+		  super.run();
+			while (true){
+				try {
+		      Thread.sleep(refreshLatency);
+	      } catch (InterruptedException e) {
+		      e.printStackTrace();
+	      }
+				SwingUtilities.invokeLater(new Runnable() {
+					
+					public void run() {
+						drawPanel.repaint();
+					}
+				});
+			}
+		}
+	}
+	
 	public Observer(Observable dataset) {
 		dataSource = dataset;
-		final PaintPanel drawPanel=new PaintPanel();
+		drawPanel=new PaintPanel();
 		drawPanel.setPreferredSize(new Dimension(800,600));
 		drawPanel.setSize(drawPanel.getPreferredSize());
 		add(drawPanel);
 		pack();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
-
-		while (true){
-			try {
-	      Thread.sleep(refreshLatency);
-      } catch (InterruptedException e) {
-	      e.printStackTrace();
-      }
-			SwingUtilities.invokeLater(new Runnable() {
-				
-				public void run() {
-					drawPanel.repaint();
-				}
-			});
-		}
+		(new RefreshThread()).start();
 	}
 }
