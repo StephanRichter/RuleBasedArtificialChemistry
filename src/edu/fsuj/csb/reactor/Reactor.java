@@ -17,6 +17,7 @@ public class Reactor extends Thread implements Observable {
 	Vector<Reaction> registeredReactions=new Vector<Reaction>();
 	static MoleculeSet molecules=new MoleculeSet();
 	Vector<Integer> reactantCounts=new Vector<Integer>();
+	private int reactorSize=1000;
 	static Random generator=new Random(1);
 	private static Molecule inflowMolecule;
 
@@ -30,6 +31,11 @@ public class Reactor extends Thread implements Observable {
 	  while (true){
 	  	Reaction reaction = registeredReactions.get(generator.nextInt(numberOfRegisteredReactions));
 	  	
+	  	if (reaction instanceof InflowReaction){
+	  		InflowReaction ifr = (InflowReaction) reaction;
+	  		ifr.setActive(molecules.size()<reactorSize);
+	  	}
+	  	
 	  	int numberOfReactants=reaction.numberOfConsumedMolecules();
 	  	MoleculeSet substrates = molecules.dice(numberOfReactants);
 	  	try {
@@ -38,7 +44,6 @@ public class Reactor extends Thread implements Observable {
       	e.printStackTrace();
       	break;
       }
-		  InflowReaction.setActive(molecules.get(inflowMolecule)<100);
 	  }
 	}	
 
@@ -52,19 +57,21 @@ public class Reactor extends Thread implements Observable {
 	public static void main(String[] args) throws InterruptedException {
 		MoleculeSet.setRandom(generator);
 		Reaction.setRandom(generator);
-		inflowMolecule =
-		outflowMolecule=
-		Reactor reactor=new Reactor();		
-		reactor.register(new InflowReaction(inflowMolecule));
-
 		
-		
-		reactor.register(new OutflowReaction(outflowMolecule));
+		Reactor reactor=new Reactor();
+		reactor.setSize(1000);
+		reactor.register(new InflowReaction(new A_Polymer(10)));
+		reactor.register(new PolymerCutoff());
+		reactor.register(new OutflowReaction(new A_Polymer(1)));
 		reactor.start();
 		
 		new Observer(molecules);
 		(new Observer(reactor)).setLatency(500);
 	}
+
+	private void setSize(int s) {
+	  reactorSize=s;
+  }
 
 	private void register(Reaction type) {
 		registeredReactions.add(type);
