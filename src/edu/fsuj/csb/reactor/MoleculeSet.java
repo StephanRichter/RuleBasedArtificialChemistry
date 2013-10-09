@@ -67,7 +67,9 @@ public class MoleculeSet implements Observable{
   }
 
 	Integer get(Molecule m) {
-	  return molecules.get(m);
+		Integer result = molecules.get(m);
+		if (result==null) return 0;
+	  return result;
   }
 
 	public static void setRandom(Random g) {

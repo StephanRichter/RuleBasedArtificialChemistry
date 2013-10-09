@@ -3,12 +3,14 @@ package edu.fsuj.csb.reactor;
 import java.util.Random;
 import java.util.Vector;
 
+import edu.fsuj.csb.reactor.reactions.A_Condensation;
 import edu.fsuj.csb.reactor.reactions.A_Outflow;
 import edu.fsuj.csb.reactor.reactions.InflowReaction;
 import edu.fsuj.csb.reactor.reactions.PolymerBreakdown;
 import edu.fsuj.csb.reactor.reactions.Reaction;
 import edu.fsuj.reactor.molecules.A_Polymer;
 import edu.fsuj.reactor.molecules.Molecule;
+import edu.fsuj.reactor.molecules.MoleculeA;
 
 public class Reactor extends Thread implements Observable{
 	
@@ -16,7 +18,7 @@ public class Reactor extends Thread implements Observable{
 	MoleculeSet molecules=new MoleculeSet();
 	Vector<Integer> reactantCounts=new Vector<Integer>();
 	static Random generator=new Random(1);
-	private static Molecule aPolymer;
+	private static Molecule inflowMolecule;
 
 	@Override
 	public void run() {
@@ -36,31 +38,29 @@ public class Reactor extends Thread implements Observable{
       	e.printStackTrace();
       	break;
       }
+		  InflowReaction.setActive(molecules.get(inflowMolecule)<10);
+
 	  }
-	  InflowReaction.setActive(molecules.get(aPolymer)<500);
 	}	
 
 	private void apply(Reaction reaction, MoleculeSet substrates) throws OutOfMoleculesException {
 	  //System.out.println("Trying to apply "+reaction.getClass().getSimpleName()+" on "+substrates);		
 	  molecules.modify(reaction.balance(substrates));
 		//System.out.println("Molecule set: "+molecules);
-	  try {
-	    Thread.sleep(100);
-    } catch (InterruptedException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-    }
+
   }
 	
 	public static void main(String[] args) throws InterruptedException {
 		MoleculeSet.setRandom(generator);
 		Reaction.setRandom(generator);
-		aPolymer=new A_Polymer(100);
+		inflowMolecule=new MoleculeA();
+		A_Polymer outflowMolecue = new A_Polymer(50);
 		
 		Reactor reactor=new Reactor();		
-		reactor.register(new InflowReaction(aPolymer));
-		reactor.register(new PolymerBreakdown());
-		reactor.register(new A_Outflow());
+		reactor.register(new InflowReaction(inflowMolecule));
+		reactor.register(new A_Condensation());
+		reactor.register(new PolymerBreakdown(60));
+		reactor.register(new OutflowReaction(outflowMolecue));
 		reactor.start();
 		
 		new Observer(reactor);
