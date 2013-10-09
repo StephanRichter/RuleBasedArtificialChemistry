@@ -29,4 +29,11 @@ public abstract class Reaction {
 	public void resetCounter() {
 	  counter=0;	  
   }
+	public void pause(MoleculeSet balance) {
+		System.out.println(balance);
+		try {
+	    Thread.sleep(10000);
+    } catch (InterruptedException e) {
+    }	  
+  }
 }
