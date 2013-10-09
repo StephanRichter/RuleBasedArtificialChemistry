@@ -12,7 +12,7 @@ public class Observer extends JFrame {
    * 
    */
   private static final long serialVersionUID = -7132922654936912916L;
-	private int refreshLatency=1000;
+	private int refreshLatency=100;
 	private Observable dataSource;
 	
 	private class PaintPanel extends JPanel{
@@ -23,20 +23,21 @@ public class Observer extends JFrame {
 
 		public void paint(Graphics g) {
 		  super.paint(g);
-		  SnapShot snap=dataSource.snapShot();		  
+		  SnapShot snap=dataSource.snapShot();
+		  int width=getWidth()-40;
 		  int bottom=getHeight()-20;
 		  double max=snap.max();
 		  double yscale=(bottom-50)/max;
 		  int xscale=1;
-		  while ((xscale+1)*snap.size()<getWidth()-20) xscale++;
+		  while ((xscale+1)*snap.size()<width) xscale++;
 		  System.out.println(snap.max());
 		  
 		  int imax=(int)max/10;
 		  if (imax==0) imax=1;
 		  for (int i=0; i<max; i+=imax){
 		  	int y=(int)(i*yscale);
-		  	g.drawLine(5, bottom-y, getWidth()-100, bottom-y);
-		  	g.drawString(""+i, getWidth()-100, bottom-y);
+		  	g.drawLine(5, bottom-y, width+5, bottom-y);
+		  	g.drawString(""+i, width+10, bottom-y+5);
 		  }
 		  
 		  int x=10;		  

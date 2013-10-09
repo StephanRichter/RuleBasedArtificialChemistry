@@ -16,7 +16,7 @@ public class Reactor extends Thread implements Observable{
 	MoleculeSet molecules=new MoleculeSet();
 	Vector<Integer> reactantCounts=new Vector<Integer>();
 	static Random generator=new Random(1);
-	private static Molecule A20;
+	private static Molecule aPolymer;
 
 	@Override
 	public void run() {
@@ -37,7 +37,7 @@ public class Reactor extends Thread implements Observable{
       	break;
       }
 	  }
-	  InflowReaction.setActive(molecules.get(A20)<500);
+	  InflowReaction.setActive(molecules.get(aPolymer)<500);
 	}	
 
 	private void apply(Reaction reaction, MoleculeSet substrates) throws OutOfMoleculesException {
@@ -55,10 +55,10 @@ public class Reactor extends Thread implements Observable{
 	public static void main(String[] args) throws InterruptedException {
 		MoleculeSet.setRandom(generator);
 		Reaction.setRandom(generator);
-		A20=new A_Polymer(50);
+		aPolymer=new A_Polymer(100);
 		
 		Reactor reactor=new Reactor();		
-		reactor.register(new InflowReaction(A20));
+		reactor.register(new InflowReaction(aPolymer));
 		reactor.register(new PolymerBreakdown());
 		reactor.register(new A_Outflow());
 		reactor.start();
