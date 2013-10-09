@@ -121,39 +121,17 @@ public class MoleculeSet implements Observable{
 		int length=0;
 		int max=0;
 		int indexes=0;
-		TreeMap<String,Integer> formulaMap=new TreeMap<String, Integer>(ObjectComparator.get());
 		for (Entry<Molecule, Integer> entry:molecules.entrySet()){
-			String formula=entry.getKey().identifier();
+			int id=entry.getKey().id();
 			
-			Integer scale=formulaMap.get(formula);
-			if (scale==null){
-				scale=++indexes;
-				formulaMap.put(formula, scale);
-			}			
-			if (scale>length) length=scale;
+			if (id>length) length=id;
 			int val=entry.getValue();
 			if (val>max) max=val;
 		}
 		int[] values=new int[length];
 		for (int i=0; i<length; i++) values[i]=0;
 		for (Entry<Molecule, Integer> entry:molecules.entrySet()){
-			Integer v = entry.getValue();
-			if (v==null){
-				System.out.println(this);
-				System.exit(0);
-			}
-			String k = entry.getKey().identifier();
-			if (k==null){
-				System.out.println(this);
-				System.exit(0);
-			}
-			Integer i = formulaMap.get(k);
-			if (i==null){
-				System.out.println(k);
-				System.out.println(this);
-				System.exit(0);
-			}
-			values[formulaMap.get(k)-1]=v;
+			values[entry.getKey().id()-1]=entry.getValue();
 		}
 		SnapShot result=new SnapShot(values,max);
 	  return result;

@@ -4,6 +4,7 @@ import java.util.Map.Entry;
 
 import edu.fsuj.csb.reactor.MoleculeSet;
 import edu.fsuj.reactor.molecules.DNA;
+import edu.fsuj.reactor.molecules.Diphosphate;
 import edu.fsuj.reactor.molecules.Molecule;
 import edu.fsuj.reactor.molecules.Nucleotide;
 
@@ -50,6 +51,7 @@ public class DNAElongation extends Reaction {
 		}
 		dna.append(base);
 		balance.invert();
+		balance.add(new Diphosphate());
 		return balance;
 	}
 

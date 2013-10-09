@@ -27,7 +27,7 @@ public class Reactor extends Thread implements Observable {
 	Vector<Integer> reactantCounts=new Vector<Integer>();
 	private int reactorSize=1000;
 	private int latency=0;
-	private boolean clearReactions;
+	private boolean clearReactions=true;
 	static Random generator=new Random(1);
 	private static Molecule inflowMolecule;
 
@@ -75,22 +75,24 @@ public class Reactor extends Thread implements Observable {
 		MoleculeSet.setRandom(generator);
 		Reaction.setRandom(generator);		
 		Reactor reactor=new Reactor();
-		reactor.setSize(600);
+		reactor.setSize(10000);
 		reactor.setLatency(0);
-		reactor.enableClearReactions(false);
+		//reactor.enableClearReactions(false);
 		
 		DNA primer=new DNA("");
 		molecules.add(primer);
 		
 		ATP atp = new ATP();
 		InflowReaction atpInflow;
+		Deoxyribose drib = new Deoxyribose();
+		InflowReaction dRibInflow;		
 		
 		reactor.register(atpInflow= new InflowReaction(atp));
+		reactor.register(dRibInflow=new InflowReaction(drib));		
 		reactor.register(new InflowReaction(new Adenine()));
 		reactor.register(new InflowReaction(new Cytosine()));
 		reactor.register(new InflowReaction(new Guanine()));
 		reactor.register(new InflowReaction(new Thymin()));
-		reactor.register(new InflowReaction(new Deoxyribose()));		
 		reactor.register(new BuildNucleoside());
 		reactor.register(new ActiveteNucleotide());
 		reactor.register(new DNAElongation());		
@@ -98,17 +100,20 @@ public class Reactor extends Thread implements Observable {
 		reactor.start();
 		
 		new Observer(molecules);
-		(new Observer(reactor)).setLatency(500);
+		(new Observer(reactor)).setLatency(2000);
 		int counter=0;
 		while (true) {
 			Integer atpcount = molecules.get(atp);
 			if (atpcount==null || atpcount==0) atpInflow.setActive(true);
+			Integer dribcount = molecules.get(drib);
+			if (dribcount==null || dribcount==0) dRibInflow.setActive(true);
 			counter++;
 			Thread.sleep(1);
 			if (counter<1000) continue;
 			counter=0;
 			String s=molecules.toString();			
-			System.out.println(primer.sequence().length()+", \t"+s);
+			System.out.println(primer.sequence().length()+", \t"+s);			
+			System.out.println(Molecule.ids());
 		}
 	}
 
