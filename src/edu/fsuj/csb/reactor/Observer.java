@@ -2,6 +2,7 @@ package edu.fsuj.csb.reactor;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,25 +14,40 @@ public class Observer extends JFrame {
    */
   private static final long serialVersionUID = -7132922654936912916L;
 	private int refreshLatency=100;
-	private Observable dataSource;
+	private Observable dataSource;	
+	private Vector<Double> maxHistory=new Vector<Double>();
+	private Vector<Integer> sizeHistory=new Vector<Integer>();
 	
 	private class PaintPanel extends JPanel{
-		/**
-     * 
-     */
     private static final long serialVersionUID = 648033512192629081L;
+	  private int histLength=50;
 
 		public void paint(Graphics g) {
 		  super.paint(g);
 		  SnapShot snap=dataSource.snapShot();
+			
+		  
+		  maxHistory.add(snap.max());
+			if (maxHistory.size()>histLength) maxHistory.remove(0);
+			double max=0;
+			for (double d:maxHistory){
+				if (d>max) max=d;
+			}
+			
+			sizeHistory.add(snap.size());
+			if (sizeHistory.size()>histLength) sizeHistory.remove(0);
+			int maxSize=0;
+			for (int s:sizeHistory){
+				if (s>maxSize) maxSize=s;
+			}
+						
 		  int width=getWidth()-40;
-		  int bottom=getHeight()-30;
-		  double max=snap.max();
+		  int bottom=getHeight()-30;		  
 		  double yscale=(bottom-50)/max;
 		  int xscale=1;
-		  while ((xscale+1)*snap.size()<width) xscale++;	  
+		  while ((xscale+1)*maxSize<width) xscale++;	  
 		  
-		  int xd=snap.size()/10;
+		  int xd=maxSize/10;
 		  if (xd<1) xd=1;
 		  
 		  int x=0;
