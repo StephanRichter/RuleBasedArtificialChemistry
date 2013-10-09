@@ -9,6 +9,7 @@ public class PolymerBreakdown extends Reaction {
 	private int minLength;
 
 	public PolymerBreakdown(int minLength) {
+		if (minLength<2) minLength=2;
 		this.minLength=minLength;
   }
 	
