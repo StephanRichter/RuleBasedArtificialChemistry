@@ -1,15 +1,23 @@
 package edu.fsuj.reactor.molecules;
 
+
 public class DNA extends Molecule {
 
+	private static int counter=0;
+	private int num;
 	private String sequence;
 	
 	public DNA(String sequence) {
 		this.sequence=sequence;
+		num=++counter;
+  }
+
+	public DNA() {
+	  this("");
   }
 
 	public String identifier() {
-		return "dna";
+		return "DNA"+num+":"+sequence;
 	}
 
 	public String sequence() {
