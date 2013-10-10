@@ -47,9 +47,9 @@ public class Observer extends JFrame {
 				if (s>maxSize) maxSize=s;
 			}
 						
-		  int width=getWidth()-60;
+		  int width=getWidth()-80;
 		  int bottom=getHeight()-30;		  
-		  double yscale=(bottom-50)/max;
+		  double yscale=(bottom-100)/max;
 		  int xscale=1;
 		  while ((xscale+1)*maxSize<width) xscale++;	  
 		  
