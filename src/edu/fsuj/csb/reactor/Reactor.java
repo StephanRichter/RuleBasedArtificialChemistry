@@ -81,10 +81,7 @@ public class Reactor extends Thread implements Observable {
 	}	
 
 	private void apply(Reaction reaction, MoleculeSet substrates) throws OutOfMoleculesException {
-	  //System.out.println("Trying to apply "+reaction.getClass().getSimpleName()+" on "+substrates);		
 	  molecules.modify(reaction.balance(substrates));
-		//System.out.println("Molecule set: "+molecules);
-
   }
 	
 	public static void main(String[] args) throws InterruptedException {
