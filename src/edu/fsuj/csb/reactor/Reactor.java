@@ -17,7 +17,6 @@ import edu.fsuj.csb.reactor.dnamodel.molecules.Thymine;
 import edu.fsuj.csb.reactor.dnamodel.reactions.DNAElongation;
 import edu.fsuj.csb.reactor.dnamodel.reactions.NucleosideFormation;
 import edu.fsuj.csb.reactor.dnamodel.reactions.NucleotideActivation;
-import edu.fsuj.csb.reactor.molecules.Molecule;
 import edu.fsuj.csb.reactor.reactions.InflowReaction;
 import edu.fsuj.csb.reactor.reactions.OutflowReaction;
 import edu.fsuj.csb.reactor.reactions.Reaction;
@@ -30,9 +29,13 @@ public class Reactor extends Thread implements Observable {
 	private int reactorSize=1000;
 	private int latency=0;
 	private boolean clearReactions=true;
-	static Random generator=new Random(1);
+	private Random generator;
+	
 
 	public Reactor(String[] args) {
+		generator=new Random();
+		MoleculeSet.setRandom(generator);
+		Reaction.setRandom(generator);
 		setParameter(args);
   }
 
@@ -85,8 +88,6 @@ public class Reactor extends Thread implements Observable {
   }
 	
 	public static void main(String[] args) throws InterruptedException {
-		MoleculeSet.setRandom(generator);
-		Reaction.setRandom(generator);		
 		Reactor reactor=new Reactor(args);
 		
 		molecules.add(new DNA());
@@ -99,11 +100,8 @@ public class Reactor extends Thread implements Observable {
 		molecules.add(new DNA());
 		molecules.add(new DNA());
 		
-		ATP atp = new ATP();
-		Deoxyribose drib = new Deoxyribose();
-		
-		reactor.register(new InflowReaction(atp));			// 1
-		reactor.register(new InflowReaction(drib));		// 2
+		reactor.register(new InflowReaction(new ATP()));			// 1
+		reactor.register(new InflowReaction(new Deoxyribose()));		// 2
 		reactor.register(new InflowReaction(new Adenine()));			// 3
 		reactor.register(new InflowReaction(new Cytosine()));			// 4
 		reactor.register(new InflowReaction(new Guanine()));			// 5
