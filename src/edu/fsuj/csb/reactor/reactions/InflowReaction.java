@@ -8,10 +8,12 @@ public class InflowReaction extends Reaction {
 	
 	private boolean active=true;
 	MoleculeSet production;
+	Molecule m;
 
 	public InflowReaction(Molecule type) {
 		production=new MoleculeSet();
-		production.add(type);
+		m=type;
+		production.add(m);
   }
 
 	@Override
@@ -34,6 +36,10 @@ public class InflowReaction extends Reaction {
   }
 	
 	public String toString() {
-	  return production.first()+" inflow";
+	  return molecule()+" inflow";
 	}
+
+	public Molecule molecule() {
+	  return m;
+  }
 }
