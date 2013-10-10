@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import de.srsoftware.tools.ObjectComparator;
-import edu.fsuj.reactor.molecules.Molecule;
+import edu.fsuj.csb.reactor.molecules.Molecule;
 
 public class MoleculeSet implements Observable{
 	private static Random generator;

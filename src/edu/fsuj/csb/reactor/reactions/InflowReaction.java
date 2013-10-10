@@ -1,7 +1,7 @@
 package edu.fsuj.csb.reactor.reactions;
 
 import edu.fsuj.csb.reactor.MoleculeSet;
-import edu.fsuj.reactor.molecules.Molecule;
+import edu.fsuj.csb.reactor.molecules.Molecule;
 
 
 public class InflowReaction extends Reaction {

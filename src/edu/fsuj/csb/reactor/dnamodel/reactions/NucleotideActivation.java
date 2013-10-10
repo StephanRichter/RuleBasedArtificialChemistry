@@ -1,4 +1,4 @@
-package edu.fsuj.reactor.molecules.reactions;
+package edu.fsuj.csb.reactor.dnamodel.reactions;
 
 import java.util.Map.Entry;
 
@@ -6,8 +6,8 @@ import edu.fsuj.csb.reactor.MoleculeSet;
 import edu.fsuj.csb.reactor.dnamodel.molecules.ADP;
 import edu.fsuj.csb.reactor.dnamodel.molecules.Diphosphate;
 import edu.fsuj.csb.reactor.dnamodel.molecules.Nucleotide;
+import edu.fsuj.csb.reactor.molecules.Molecule;
 import edu.fsuj.csb.reactor.reactions.Reaction;
-import edu.fsuj.reactor.molecules.Molecule;
 
 public class NucleotideActivation extends Reaction {
 

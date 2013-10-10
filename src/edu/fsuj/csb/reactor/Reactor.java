@@ -14,13 +14,13 @@ import edu.fsuj.csb.reactor.dnamodel.molecules.Deoxyribose;
 import edu.fsuj.csb.reactor.dnamodel.molecules.Diphosphate;
 import edu.fsuj.csb.reactor.dnamodel.molecules.Guanine;
 import edu.fsuj.csb.reactor.dnamodel.molecules.Thymine;
+import edu.fsuj.csb.reactor.dnamodel.reactions.DNAElongation;
+import edu.fsuj.csb.reactor.dnamodel.reactions.NucleosideFormation;
+import edu.fsuj.csb.reactor.dnamodel.reactions.NucleotideActivation;
+import edu.fsuj.csb.reactor.molecules.Molecule;
 import edu.fsuj.csb.reactor.reactions.InflowReaction;
 import edu.fsuj.csb.reactor.reactions.OutflowReaction;
 import edu.fsuj.csb.reactor.reactions.Reaction;
-import edu.fsuj.reactor.molecules.Molecule;
-import edu.fsuj.reactor.molecules.reactions.DNAElongation;
-import edu.fsuj.reactor.molecules.reactions.NucleosideFormation;
-import edu.fsuj.reactor.molecules.reactions.NucleotideActivation;
 
 public class Reactor extends Thread implements Observable {
 	

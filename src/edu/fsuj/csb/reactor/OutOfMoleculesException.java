@@ -1,6 +1,6 @@
 package edu.fsuj.csb.reactor;
 
-import edu.fsuj.reactor.molecules.Molecule;
+import edu.fsuj.csb.reactor.molecules.Molecule;
 
 public class OutOfMoleculesException extends Exception {
 

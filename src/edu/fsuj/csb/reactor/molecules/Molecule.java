@@ -1,4 +1,4 @@
-package edu.fsuj.reactor.molecules;
+package edu.fsuj.csb.reactor.molecules;
 
 import java.util.Map.Entry;
 import java.util.TreeMap;
