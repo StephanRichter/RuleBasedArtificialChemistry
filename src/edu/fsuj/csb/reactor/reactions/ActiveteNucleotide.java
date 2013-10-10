@@ -3,6 +3,7 @@ package edu.fsuj.csb.reactor.reactions;
 import java.util.Map.Entry;
 
 import edu.fsuj.csb.reactor.MoleculeSet;
+import edu.fsuj.reactor.molecules.ADP;
 import edu.fsuj.reactor.molecules.Diphosphate;
 import edu.fsuj.reactor.molecules.Molecule;
 import edu.fsuj.reactor.molecules.Nucleotide;
@@ -50,7 +51,7 @@ public class ActiveteNucleotide extends Reaction {
 	      }
       }
 		}
-		balance.add(new Diphosphate());
+		balance.add(new ADP());
 		return balance;
 	}
 }

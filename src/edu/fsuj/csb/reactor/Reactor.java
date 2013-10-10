@@ -9,6 +9,7 @@ import edu.fsuj.csb.reactor.reactions.DNAElongation;
 import edu.fsuj.csb.reactor.reactions.InflowReaction;
 import edu.fsuj.csb.reactor.reactions.OutflowReaction;
 import edu.fsuj.csb.reactor.reactions.Reaction;
+import edu.fsuj.reactor.molecules.ADP;
 import edu.fsuj.reactor.molecules.ATP;
 import edu.fsuj.reactor.molecules.Adenine;
 import edu.fsuj.reactor.molecules.Cytosine;
@@ -75,9 +76,10 @@ public class Reactor extends Thread implements Observable {
 		MoleculeSet.setRandom(generator);
 		Reaction.setRandom(generator);		
 		Reactor reactor=new Reactor();
-		reactor.setSize(10000);
+		//reactor.setParameter(args);
+		reactor.setSize(300);
 		reactor.setLatency(0);
-		//reactor.enableClearReactions(false);
+		reactor.enableClearReactions(false);
 		
 		DNA primer=new DNA("");
 		molecules.add(primer);
@@ -87,20 +89,21 @@ public class Reactor extends Thread implements Observable {
 		Deoxyribose drib = new Deoxyribose();
 		InflowReaction dRibInflow;		
 		
-		reactor.register(atpInflow= new InflowReaction(atp));
-		reactor.register(dRibInflow=new InflowReaction(drib));		
-		reactor.register(new InflowReaction(new Adenine()));
-		reactor.register(new InflowReaction(new Cytosine()));
-		reactor.register(new InflowReaction(new Guanine()));
-		reactor.register(new InflowReaction(new Thymin()));
-		reactor.register(new BuildNucleoside());
-		reactor.register(new ActiveteNucleotide());
-		reactor.register(new DNAElongation());		
-		reactor.register(new OutflowReaction(new Diphosphate()));
+		reactor.register(atpInflow= new InflowReaction(atp));			// 1
+		reactor.register(dRibInflow=new InflowReaction(drib));		// 2
+		reactor.register(new InflowReaction(new Adenine()));			// 3
+		reactor.register(new InflowReaction(new Cytosine()));			// 4
+		reactor.register(new InflowReaction(new Guanine()));			// 5
+		reactor.register(new InflowReaction(new Thymin()));				// 6
+		reactor.register(new BuildNucleoside());									// 7
+		reactor.register(new ActiveteNucleotide());								// 8
+		reactor.register(new DNAElongation());										// 9
+		reactor.register(new OutflowReaction(new Diphosphate())); // 10
+		reactor.register(new OutflowReaction(new ADP())); 				// 11
 		reactor.start();
 		
 		new Observer(molecules);
-		(new Observer(reactor)).setLatency(2000);
+		new Observer(reactor);//.setLatency(10000);
 		int counter=0;
 		while (true) {
 			Integer atpcount = molecules.get(atp);
