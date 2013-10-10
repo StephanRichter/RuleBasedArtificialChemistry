@@ -5,20 +5,8 @@ import java.util.TreeMap;
 import java.util.Vector;
 
 import de.srsoftware.tools.ObjectComparator;
-import edu.fsuj.csb.reactor.dnamodel.molecules.ADP;
-import edu.fsuj.csb.reactor.dnamodel.molecules.ATP;
-import edu.fsuj.csb.reactor.dnamodel.molecules.Adenine;
-import edu.fsuj.csb.reactor.dnamodel.molecules.Cytosine;
-import edu.fsuj.csb.reactor.dnamodel.molecules.DNA;
-import edu.fsuj.csb.reactor.dnamodel.molecules.Deoxyribose;
-import edu.fsuj.csb.reactor.dnamodel.molecules.Diphosphate;
-import edu.fsuj.csb.reactor.dnamodel.molecules.Guanine;
-import edu.fsuj.csb.reactor.dnamodel.molecules.Thymine;
-import edu.fsuj.csb.reactor.dnamodel.reactions.DNAElongation;
-import edu.fsuj.csb.reactor.dnamodel.reactions.NucleosideFormation;
-import edu.fsuj.csb.reactor.dnamodel.reactions.NucleotideActivation;
+import edu.fsuj.csb.reactor.molecules.Molecule;
 import edu.fsuj.csb.reactor.reactions.InflowReaction;
-import edu.fsuj.csb.reactor.reactions.OutflowReaction;
 import edu.fsuj.csb.reactor.reactions.Reaction;
 
 public class Reactor extends Thread implements Observable {
@@ -91,33 +79,6 @@ public class Reactor extends Thread implements Observable {
 		new Observer(this);
 	}
 	
-	public static void main(String[] args) throws InterruptedException {
-		Reactor reactor=new Reactor(args);
-		
-		molecules.add(new DNA());
-		molecules.add(new DNA());
-		molecules.add(new DNA());
-		molecules.add(new DNA());
-		molecules.add(new DNA());
-		molecules.add(new DNA());
-		molecules.add(new DNA());
-		molecules.add(new DNA());
-		molecules.add(new DNA());
-		
-		reactor.register(new InflowReaction(new ATP()));
-		reactor.register(new InflowReaction(new Deoxyribose()));
-		reactor.register(new InflowReaction(new Adenine()));
-		reactor.register(new InflowReaction(new Cytosine()));
-		reactor.register(new InflowReaction(new Guanine()));
-		reactor.register(new InflowReaction(new Thymine()));
-		reactor.register(new NucleosideFormation());
-		reactor.register(new NucleotideActivation());
-		reactor.register(new DNAElongation());
-		reactor.register(new OutflowReaction(new Diphosphate()));
-		reactor.register(new OutflowReaction(new ADP()));
-		reactor.start();
-	}
-
 	private void setParameter(String[] args) {
 		boolean commandKnown=false;
 		for (String arg:args){
@@ -141,7 +102,7 @@ public class Reactor extends Thread implements Observable {
 	  reactorSize=s;
   }
 
-	private void register(Reaction type) {
+	void register(Reaction type) {
 		registeredReactions.add(type);
 		int count = type.numberOfConsumedMolecules();
 		if (!reactantCounts.contains(count)) reactantCounts.add(count);
@@ -163,5 +124,10 @@ public class Reactor extends Thread implements Observable {
 	@Override
   public String caption() {
 	  return "Reactions";
+  }
+
+	public void addMolecule(Molecule m) {
+		molecules.add(m);
+	  
   }
 }
