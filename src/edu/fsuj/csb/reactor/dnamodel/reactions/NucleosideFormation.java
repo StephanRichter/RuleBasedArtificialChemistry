@@ -6,7 +6,6 @@ import edu.fsuj.csb.reactor.MoleculeSet;
 import edu.fsuj.csb.reactor.dnamodel.molecules.Deoxyribose;
 import edu.fsuj.csb.reactor.dnamodel.molecules.NucleinBase;
 import edu.fsuj.csb.reactor.dnamodel.molecules.Nucleotide;
-import edu.fsuj.csb.reactor.dnamodel.molecules.Pentose;
 import edu.fsuj.csb.reactor.dnamodel.molecules.Ribose;
 import edu.fsuj.csb.reactor.molecules.Molecule;
 import edu.fsuj.csb.reactor.reactions.Reaction;
@@ -38,9 +37,13 @@ public class NucleosideFormation extends Reaction {
 		Character type=null;
 		int ol=-2;
 		for (Entry<Molecule, Integer> entry:balance.entrySet()){
-			if (entry.getKey() instanceof NucleinBase) type=entry.getKey().identifier().charAt(0);
-			if (entry.getKey() instanceof Deoxyribose) ol++;
-			if (entry.getKey() instanceof Ribose) ol+=2;
+			Molecule mol = entry.getKey();
+			if (mol instanceof NucleinBase) {
+				NucleinBase nb=(NucleinBase) mol;
+				type=nb.baseType();
+			}
+			if (mol instanceof Deoxyribose) ol++;
+			if (mol instanceof Ribose) ol+=2;
 		}
 		balance.add(new Nucleotide(type,0,ol));
 		return balance;		
