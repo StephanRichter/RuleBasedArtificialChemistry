@@ -76,10 +76,6 @@ public class Reactor extends Thread implements Observable {
 		MoleculeSet.setRandom(generator);
 		Reaction.setRandom(generator);		
 		Reactor reactor=new Reactor();
-		//reactor.setParameter(args);
-		reactor.setSize(300);
-		reactor.setLatency(0);
-		reactor.enableClearReactions(false);
 		
 		DNA primer=new DNA("");
 		molecules.add(primer);
@@ -119,6 +115,17 @@ public class Reactor extends Thread implements Observable {
 			System.out.println(Molecule.ids());
 		}
 	}
+
+	private void setParameter(String[] args) {
+		boolean commandKnown=false;
+		for (String arg:args){
+			if (arg.startsWith("--size=") && (commandKnown=true)) setSize(Integer.parseInt(arg.substring(7)));
+			if (arg.startsWith("--latency=") && (commandKnown=true)) setLatency(Integer.parseInt(arg.substring(10)));
+			if (arg.equals("--clear-reactions") && (commandKnown=true)) enableClearReactions(true);
+			if (arg.equals("--no-clear-reactions") && (commandKnown=true)) enableClearReactions(false);
+			if (!commandKnown) throw new UnknownError("Argument "+arg+" unknown");
+		}
+  }
 
 	private void enableClearReactions(boolean b) {
 	  clearReactions=b;	  
