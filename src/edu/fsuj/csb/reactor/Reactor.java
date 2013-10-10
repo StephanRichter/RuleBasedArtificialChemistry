@@ -32,6 +32,10 @@ public class Reactor extends Thread implements Observable {
 	static Random generator=new Random(1);
 	private static Molecule inflowMolecule;
 
+	public Reactor(String[] args) {
+		setParameter(args);
+  }
+
 	@Override
 	public void run() {
 	  super.run();
@@ -75,8 +79,7 @@ public class Reactor extends Thread implements Observable {
 	public static void main(String[] args) throws InterruptedException {
 		MoleculeSet.setRandom(generator);
 		Reaction.setRandom(generator);		
-		Reactor reactor=new Reactor();
-		reactor.setParameter(args);
+		Reactor reactor=new Reactor(args);
 		
 		DNA primer=new DNA("");
 		molecules.add(primer);
