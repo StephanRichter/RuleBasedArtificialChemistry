@@ -100,21 +100,21 @@ public class Reactor extends Thread implements Observable {
 		molecules.add(new DNA());
 		molecules.add(new DNA());
 		
-		reactor.register(new InflowReaction(new ATP()));			// 1
-		reactor.register(new InflowReaction(new Deoxyribose()));		// 2
-		reactor.register(new InflowReaction(new Adenine()));			// 3
-		reactor.register(new InflowReaction(new Cytosine()));			// 4
-		reactor.register(new InflowReaction(new Guanine()));			// 5
-		reactor.register(new InflowReaction(new Thymine()));				// 6
-		reactor.register(new NucleosideFormation());									// 7
-		reactor.register(new NucleotideActivation());								// 8
-		reactor.register(new DNAElongation());										// 9
-		reactor.register(new OutflowReaction(new Diphosphate())); // 10
-		reactor.register(new OutflowReaction(new ADP())); 				// 11
+		reactor.register(new InflowReaction(new ATP()));
+		reactor.register(new InflowReaction(new Deoxyribose()));
+		reactor.register(new InflowReaction(new Adenine()));
+		reactor.register(new InflowReaction(new Cytosine()));
+		reactor.register(new InflowReaction(new Guanine()));
+		reactor.register(new InflowReaction(new Thymine()));
+		reactor.register(new NucleosideFormation());
+		reactor.register(new NucleotideActivation());
+		reactor.register(new DNAElongation());
+		reactor.register(new OutflowReaction(new Diphosphate()));
+		reactor.register(new OutflowReaction(new ADP()));
 		reactor.start();
 		
 		new Observer(molecules);
-		new Observer(reactor);//.setLatency(10000);
+		new Observer(reactor);
 	}
 
 	private void setParameter(String[] args) {
