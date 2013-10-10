@@ -18,7 +18,6 @@ import edu.fsuj.reactor.molecules.Deoxyribose;
 import edu.fsuj.reactor.molecules.Diphosphate;
 import edu.fsuj.reactor.molecules.Guanine;
 import edu.fsuj.reactor.molecules.Molecule;
-import edu.fsuj.reactor.molecules.Nucleotide;
 import edu.fsuj.reactor.molecules.Thymin;
 
 public class Reactor extends Thread implements Observable {
@@ -30,7 +29,6 @@ public class Reactor extends Thread implements Observable {
 	private int latency=0;
 	private boolean clearReactions=true;
 	static Random generator=new Random(1);
-	private static Molecule inflowMolecule;
 
 	public Reactor(String[] args) {
 		setParameter(args);
