@@ -114,6 +114,7 @@ public class Observer extends JFrame {
 	}
 	
 	public Observer(Observable dataset) {
+		super(dataset.caption());
 		dataSource = dataset;
 		drawPanel=new PaintPanel();
 		drawPanel.setPreferredSize(new Dimension(800,600));

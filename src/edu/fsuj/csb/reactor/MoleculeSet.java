@@ -140,4 +140,9 @@ public class MoleculeSet implements Observable{
 		SnapShot result=new SnapShot(values,max);
 	  return result;
   }
+
+	@Override
+  public String caption() {
+	  return "Molecules";
+  }
 }

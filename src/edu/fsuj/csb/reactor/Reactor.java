@@ -84,6 +84,13 @@ public class Reactor extends Thread implements Observable {
 	  molecules.modify(reaction.balance(substrates));
   }
 	
+	@Override
+	public synchronized void start() {	 
+	  super.start();
+		new Observer(molecules);
+		new Observer(this);
+	}
+	
 	public static void main(String[] args) throws InterruptedException {
 		Reactor reactor=new Reactor(args);
 		
@@ -109,9 +116,6 @@ public class Reactor extends Thread implements Observable {
 		reactor.register(new OutflowReaction(new Diphosphate()));
 		reactor.register(new OutflowReaction(new ADP()));
 		reactor.start();
-		
-		new Observer(molecules);
-		new Observer(reactor);
 	}
 
 	private void setParameter(String[] args) {
@@ -154,5 +158,10 @@ public class Reactor extends Thread implements Observable {
 	  	values.put(r, c);
 	  }
 		return new SnapShot(values, max);
+  }
+
+	@Override
+  public String caption() {
+	  return "Reactions";
   }
 }
