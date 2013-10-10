@@ -76,6 +76,7 @@ public class Reactor extends Thread implements Observable {
 		MoleculeSet.setRandom(generator);
 		Reaction.setRandom(generator);		
 		Reactor reactor=new Reactor();
+		reactor.setParameter(args);
 		
 		DNA primer=new DNA("");
 		molecules.add(primer);
