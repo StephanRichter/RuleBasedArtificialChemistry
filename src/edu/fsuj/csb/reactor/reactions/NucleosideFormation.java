@@ -10,7 +10,7 @@ import edu.fsuj.reactor.molecules.Nucleotide;
 import edu.fsuj.reactor.molecules.Pentose;
 import edu.fsuj.reactor.molecules.Ribose;
 
-public class BuildNucleoside extends Reaction {
+public class NucleosideFormation extends Reaction {
 
 	@Override
 	public boolean isSuitable(MoleculeSet substrates) {
@@ -44,5 +44,9 @@ public class BuildNucleoside extends Reaction {
 		balance.add(new Nucleotide(type,0,ol));
 		return balance;		
 	}
-
+	
+	@Override
+	public String toString() {
+	  return "Nucleoside Formation";
+	}
 }

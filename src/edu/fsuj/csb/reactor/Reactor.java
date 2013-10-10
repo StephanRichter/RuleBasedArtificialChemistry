@@ -5,8 +5,8 @@ import java.util.TreeMap;
 import java.util.Vector;
 
 import de.srsoftware.tools.ObjectComparator;
-import edu.fsuj.csb.reactor.reactions.ActiveteNucleotide;
-import edu.fsuj.csb.reactor.reactions.BuildNucleoside;
+import edu.fsuj.csb.reactor.reactions.NucleotideActivation;
+import edu.fsuj.csb.reactor.reactions.NucleosideFormation;
 import edu.fsuj.csb.reactor.reactions.DNAElongation;
 import edu.fsuj.csb.reactor.reactions.InflowReaction;
 import edu.fsuj.csb.reactor.reactions.OutflowReaction;
@@ -20,7 +20,7 @@ import edu.fsuj.reactor.molecules.Deoxyribose;
 import edu.fsuj.reactor.molecules.Diphosphate;
 import edu.fsuj.reactor.molecules.Guanine;
 import edu.fsuj.reactor.molecules.Molecule;
-import edu.fsuj.reactor.molecules.Thymin;
+import edu.fsuj.reactor.molecules.Thymine;
 
 public class Reactor extends Thread implements Observable {
 	
@@ -94,9 +94,9 @@ public class Reactor extends Thread implements Observable {
 		reactor.register(new InflowReaction(new Adenine()));			// 3
 		reactor.register(new InflowReaction(new Cytosine()));			// 4
 		reactor.register(new InflowReaction(new Guanine()));			// 5
-		reactor.register(new InflowReaction(new Thymin()));				// 6
-		reactor.register(new BuildNucleoside());									// 7
-		reactor.register(new ActiveteNucleotide());								// 8
+		reactor.register(new InflowReaction(new Thymine()));				// 6
+		reactor.register(new NucleosideFormation());									// 7
+		reactor.register(new NucleotideActivation());								// 8
 		reactor.register(new DNAElongation());										// 9
 		reactor.register(new OutflowReaction(new Diphosphate())); // 10
 		reactor.register(new OutflowReaction(new ADP())); 				// 11

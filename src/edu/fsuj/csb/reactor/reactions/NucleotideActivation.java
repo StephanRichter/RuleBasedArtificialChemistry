@@ -8,7 +8,7 @@ import edu.fsuj.reactor.molecules.Diphosphate;
 import edu.fsuj.reactor.molecules.Molecule;
 import edu.fsuj.reactor.molecules.Nucleotide;
 
-public class ActiveteNucleotide extends Reaction {
+public class NucleotideActivation extends Reaction {
 
 	@Override
 	public boolean isSuitable(MoleculeSet substrates) {
@@ -54,4 +54,10 @@ public class ActiveteNucleotide extends Reaction {
 		balance.add(new ADP());
 		return balance;
 	}
+	
+	@Override
+	public String toString() {
+	  return "Nucleotide Activation";
+	}
+
 }
