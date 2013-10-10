@@ -1,14 +1,15 @@
-package edu.fsuj.csb.reactor.reactions;
+package edu.fsuj.reactor.molecules.reactions;
 
 import java.util.Map.Entry;
 
 import edu.fsuj.csb.reactor.MoleculeSet;
-import edu.fsuj.reactor.molecules.Deoxyribose;
+import edu.fsuj.csb.reactor.dnamodel.molecules.Deoxyribose;
+import edu.fsuj.csb.reactor.dnamodel.molecules.NucleinBase;
+import edu.fsuj.csb.reactor.dnamodel.molecules.Nucleotide;
+import edu.fsuj.csb.reactor.dnamodel.molecules.Pentose;
+import edu.fsuj.csb.reactor.dnamodel.molecules.Ribose;
+import edu.fsuj.csb.reactor.reactions.Reaction;
 import edu.fsuj.reactor.molecules.Molecule;
-import edu.fsuj.reactor.molecules.NucleinBase;
-import edu.fsuj.reactor.molecules.Nucleotide;
-import edu.fsuj.reactor.molecules.Pentose;
-import edu.fsuj.reactor.molecules.Ribose;
 
 public class NucleosideFormation extends Reaction {
 

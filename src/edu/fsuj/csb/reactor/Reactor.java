@@ -5,22 +5,22 @@ import java.util.TreeMap;
 import java.util.Vector;
 
 import de.srsoftware.tools.ObjectComparator;
-import edu.fsuj.csb.reactor.reactions.NucleotideActivation;
-import edu.fsuj.csb.reactor.reactions.NucleosideFormation;
-import edu.fsuj.csb.reactor.reactions.DNAElongation;
+import edu.fsuj.csb.reactor.dnamodel.molecules.ADP;
+import edu.fsuj.csb.reactor.dnamodel.molecules.ATP;
+import edu.fsuj.csb.reactor.dnamodel.molecules.Adenine;
+import edu.fsuj.csb.reactor.dnamodel.molecules.Cytosine;
+import edu.fsuj.csb.reactor.dnamodel.molecules.DNA;
+import edu.fsuj.csb.reactor.dnamodel.molecules.Deoxyribose;
+import edu.fsuj.csb.reactor.dnamodel.molecules.Diphosphate;
+import edu.fsuj.csb.reactor.dnamodel.molecules.Guanine;
+import edu.fsuj.csb.reactor.dnamodel.molecules.Thymine;
 import edu.fsuj.csb.reactor.reactions.InflowReaction;
 import edu.fsuj.csb.reactor.reactions.OutflowReaction;
 import edu.fsuj.csb.reactor.reactions.Reaction;
-import edu.fsuj.reactor.molecules.ADP;
-import edu.fsuj.reactor.molecules.ATP;
-import edu.fsuj.reactor.molecules.Adenine;
-import edu.fsuj.reactor.molecules.Cytosine;
-import edu.fsuj.reactor.molecules.DNA;
-import edu.fsuj.reactor.molecules.Deoxyribose;
-import edu.fsuj.reactor.molecules.Diphosphate;
-import edu.fsuj.reactor.molecules.Guanine;
 import edu.fsuj.reactor.molecules.Molecule;
-import edu.fsuj.reactor.molecules.Thymine;
+import edu.fsuj.reactor.molecules.reactions.DNAElongation;
+import edu.fsuj.reactor.molecules.reactions.NucleosideFormation;
+import edu.fsuj.reactor.molecules.reactions.NucleotideActivation;
 
 public class Reactor extends Thread implements Observable {
 	
