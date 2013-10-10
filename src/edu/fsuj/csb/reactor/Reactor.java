@@ -57,7 +57,15 @@ public class Reactor extends Thread implements Observable {
 	  	
 	  	if (reaction instanceof InflowReaction){
 	  		InflowReaction ifr = (InflowReaction) reaction;
-	  		ifr.setActive(molecules.size()<reactorSize);
+	  		if (molecules.size()>reactorSize){ // reactor is full
+		  		Integer count = molecules.get(ifr.molecule());
+		  		if (count==null || count==0){ // but: we have no substrate left in reactor
+		  			ifr.setActive(true);
+		  		} else{ // reactor is full and contains substrate
+		  			ifr.setActive(false);
+		  		}
+	  		} else ifr.setActive(true);
+
 	  	}
 
 	  	if (latency>0){
@@ -81,16 +89,21 @@ public class Reactor extends Thread implements Observable {
 		Reaction.setRandom(generator);		
 		Reactor reactor=new Reactor(args);
 		
-		DNA primer=new DNA("");
-		molecules.add(primer);
+		molecules.add(new DNA());
+		molecules.add(new DNA());
+		molecules.add(new DNA());
+		molecules.add(new DNA());
+		molecules.add(new DNA());
+		molecules.add(new DNA());
+		molecules.add(new DNA());
+		molecules.add(new DNA());
+		molecules.add(new DNA());
 		
 		ATP atp = new ATP();
-		InflowReaction atpInflow;
 		Deoxyribose drib = new Deoxyribose();
-		InflowReaction dRibInflow;		
 		
-		reactor.register(atpInflow= new InflowReaction(atp));			// 1
-		reactor.register(dRibInflow=new InflowReaction(drib));		// 2
+		reactor.register(new InflowReaction(atp));			// 1
+		reactor.register(new InflowReaction(drib));		// 2
 		reactor.register(new InflowReaction(new Adenine()));			// 3
 		reactor.register(new InflowReaction(new Cytosine()));			// 4
 		reactor.register(new InflowReaction(new Guanine()));			// 5
@@ -104,20 +117,6 @@ public class Reactor extends Thread implements Observable {
 		
 		new Observer(molecules);
 		new Observer(reactor);//.setLatency(10000);
-		int counter=0;
-		while (true) {
-			Integer atpcount = molecules.get(atp);
-			if (atpcount==null || atpcount==0) atpInflow.setActive(true);
-			Integer dribcount = molecules.get(drib);
-			if (dribcount==null || dribcount==0) dRibInflow.setActive(true);
-			counter++;
-			Thread.sleep(1);
-			if (counter<1000) continue;
-			counter=0;
-			String s=molecules.toString();			
-			System.out.println(primer.sequence().length()+", \t"+s);			
-			System.out.println(Molecule.ids());
-		}
 	}
 
 	private void setParameter(String[] args) {
@@ -152,7 +151,6 @@ public class Reactor extends Thread implements Observable {
 	@Override
   public SnapShot snapShot() {
 		int max=0;		
-	  int i=0;
 	  TreeMap<Object, Integer> values=new TreeMap<Object, Integer>(ObjectComparator.get());
 	  for (Reaction r:registeredReactions){
 	  	int c=r.count();
