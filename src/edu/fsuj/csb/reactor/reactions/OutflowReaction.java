@@ -31,4 +31,9 @@ public class OutflowReaction extends Reaction {
   public int numberOfConsumedMolecules() {
 	  return 1;
   }
+	
+	@Override
+	public String toString() {
+	  return outflowMoleculeType+" outflow";
+	}
 }

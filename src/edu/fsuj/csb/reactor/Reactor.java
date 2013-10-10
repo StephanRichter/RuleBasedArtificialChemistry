@@ -1,8 +1,10 @@
 package edu.fsuj.csb.reactor;
 
 import java.util.Random;
+import java.util.TreeMap;
 import java.util.Vector;
 
+import de.srsoftware.tools.ObjectComparator;
 import edu.fsuj.csb.reactor.reactions.ActiveteNucleotide;
 import edu.fsuj.csb.reactor.reactions.BuildNucleoside;
 import edu.fsuj.csb.reactor.reactions.DNAElongation;
@@ -150,13 +152,13 @@ public class Reactor extends Thread implements Observable {
 	@Override
   public SnapShot snapShot() {
 		int max=0;		
-	  int[] values=new int[registeredReactions.size()];
 	  int i=0;
+	  TreeMap<Object, Integer> values=new TreeMap<Object, Integer>(ObjectComparator.get());
 	  for (Reaction r:registeredReactions){
 	  	int c=r.count();
-	  	if (c>max) max=c;
-	  	values[i++]=c;
+	  	if (c>max) max=c;	  	
 	  	if (clearReactions) r.resetCounter();
+	  	values.put(r, c);
 	  }
 		return new SnapShot(values, max);
   }

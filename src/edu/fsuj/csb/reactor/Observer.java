@@ -1,7 +1,10 @@
 package edu.fsuj.csb.reactor;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.util.Map.Entry;
 import java.util.Vector;
 
 import javax.swing.JFrame;
@@ -23,10 +26,12 @@ public class Observer extends JFrame {
 	private class PaintPanel extends JPanel{
     private static final long serialVersionUID = 648033512192629081L;
 
-		public void paint(Graphics g) {
-		  super.paint(g);
-		  SnapShot snap=dataSource.snapShot();
-			
+		public void paint(Graphics gr) {
+		  super.paint(gr);
+		  Graphics2D g=(Graphics2D) gr;
+  		g.setColor(Color.black);
+
+		  SnapShot snap=dataSource.snapShot();			
 		  
 		  maxHistory.add(snap.max());
 			if (maxHistory.size()>histLength) maxHistory.remove(0);
@@ -67,10 +72,16 @@ public class Observer extends JFrame {
 		  	g.drawString(""+i, width+10, bottom-y+5);
 		  }
 		  
-		  x=10;		  
-		  for (int i=0; i<snap.size(); i++) {
+		  x=10;
+		  int y;
+		  for (Entry<Object, Integer> entry:snap.entries()) {
+		  	int val = entry.getValue();		  	
+		  	y=bottom-(int)(val*yscale);
+		  	g.rotate(-1.6);
+		  	g.drawString(entry.getKey().toString(), -y,x+8);
+	  		g.rotate(1.6);
 		  	for (int j=0; j<xscale; j++){
-		  		g.drawLine(x, bottom, x, bottom-(int)(snap.get(i)*yscale));
+		  		g.drawLine(x, bottom, x, y);
 		  		x++;
 		  	}
       }

@@ -1,11 +1,15 @@
 package edu.fsuj.csb.reactor;
 
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
+
 public class SnapShot {
 
 	private int max;
-	private int[] values;
+	private TreeMap<Object, Integer> values;
 
-	public SnapShot(int[] values, int max) {
+	public SnapShot(TreeMap<Object, Integer> values, int max) {
 		this.max=max;
 		this.values=values;
   }
@@ -15,11 +19,11 @@ public class SnapShot {
   }
 
 	public int size() {
-	  return values.length;
+	  return values.size();
   }
 
-	public double get(int i) {
-	  return values[i];
+	public Set<Entry<Object, Integer>> entries() {
+	  return values.entrySet();
   }
 
 }

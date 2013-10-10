@@ -36,4 +36,9 @@ public abstract class Reaction {
     } catch (InterruptedException e) {
     }	  
   }
+	
+	@Override
+	public String toString() {
+	  return getClass().getSimpleName();
+	}
 }

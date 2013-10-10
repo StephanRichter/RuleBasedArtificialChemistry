@@ -32,4 +32,8 @@ public class InflowReaction extends Reaction {
 	public void setActive(boolean b) {
 		active=b;
   }
+	
+	public String toString() {
+	  return production.first()+" inflow";
+	}
 }

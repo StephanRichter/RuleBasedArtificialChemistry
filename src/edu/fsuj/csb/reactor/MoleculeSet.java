@@ -115,24 +115,28 @@ public class MoleculeSet implements Observable{
 		}
 		return this;
   }
-
-	@Override
+	
+	TreeMap<Molecule, Integer> keyDecay=new TreeMap<Molecule, Integer>(ObjectComparator.get());
+	
   public synchronized SnapShot snapShot() {
-		int length=0;
 		int max=0;
-		int indexes=0;
+		TreeMap<Object, Integer> values=new TreeMap<Object, Integer>(ObjectComparator.get());		
 		for (Entry<Molecule, Integer> entry:molecules.entrySet()){
-			int id=entry.getKey().id();
-			
-			if (id>length) length=id;
+			Molecule mol = entry.getKey();
+			keyDecay.put(mol, 10);
 			int val=entry.getValue();
 			if (val>max) max=val;
 		}
-		int[] values=new int[length];
-		for (int i=0; i<length; i++) values[i]=0;
-		for (Entry<Molecule, Integer> entry:molecules.entrySet()){
-			values[entry.getKey().id()-1]=entry.getValue();
+		for (Entry<Molecule, Integer> entry:keyDecay.entrySet()){
+			Molecule key = entry.getKey();
+			int val=entry.getValue()-1;
+			if (val<1) {
+				keyDecay.remove(key);
+			} else {
+				values.put(key, 0);
+			}
 		}
+		values.putAll(molecules);
 		SnapShot result=new SnapShot(values,max);
 	  return result;
   }
